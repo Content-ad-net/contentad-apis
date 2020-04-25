@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: Content.ad Reporting API
+  version: '1.0'
+  description: |-
+    Content.ad offers this REST API to make reporting data available in either XML or JSON format.
+
+    Please note that this feature requires a unique API key and API password. Please contact your account representative for more information.
+servers:
+  - url: 'https://rest.content.ad'
+    description: Rest API
+paths:
+  /reports/publisher:
+    get:
+      summary: Publisher Report
+      tags:
+        - Publisher Reports
+      responses: {}
+      operationId: publisherReport
+      description: Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
+      security:
+        - basicAuth: []
+      requestBody: {}
+      parameters:
+        - schema:
+            type: string
+            default: xml
+            example: xml
+            enum:
+              - xml
+              - json
+          in: query
+          name: output
+          description: Defines response format as either XML or JSON as specified.
+        - schema:
+            type: string
+            format: date-time
+            default: 'yesterday, beinning of day, Pacific Time'
+          in: query
+          name: startDate
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded.
+            Example: 2016-01-25T00:00:00-08:00
+        - schema:
+            type: string
+            format: date-time
+            default: 'yesterday, beginning of day, Pacific Time'
+          in: query
+          name: endDate
+          description: 'Defines end of report date range. Must be URL encoded. Example: 2016-01-26T00:00:00-08:00'
+        - schema:
+            type: boolean
+            default: 'false'
+            example: 'false'
+          in: query
+          name: groupByDay
+          description: 'If true, return entries by day rather than by hour.'
+components:
+  schemas: {}
+  securitySchemes:
+    API Key:
+      name: API Password
+      type: apiKey
+      in: header
+    basicAuth:
+      type: http
+      scheme: basic

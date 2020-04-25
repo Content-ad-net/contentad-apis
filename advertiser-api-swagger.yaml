@@ -1,0 +1,1203 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Content.ad Advertiser API
+  description: |
+    URL: https://transact.content.ad/transact/1.0
+
+    The Content.ad advertiser API can be used to manage your campaigns and ads.  Please note the API limits: http://help.content.ad/advertiser-transactional-api-limits/
+
+    Separate reporting APIs are available upon request.
+host: 'staging.transact.content.ad:8080'
+basePath: /transact/1.0
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /advertiser/login:
+    get:
+      tags:
+        - Authentication
+      security:
+        - basicAuth: []
+      description: |
+        Retrieve current token for use in subsequent API calls.  The token is valid for up to four hours.  Please contact your account representative to obtain an API key and password for Basic Auth.
+
+        Before using any of the API calls detailed below, an authorization token must be retrieved:
+        - Send a GET request to the authentication point: https://transact.content.ad/transact/1.0/advertiser/login.
+          - As part of this request, send your API Key and Password via [Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication).
+        - Include your new authorization token with all other requests by setting an HTTP Header named "auth_token"
+      operationId: loginAdvertiser
+      responses:
+        '200':
+          description: Retrieve API token
+          schema:
+            type: object
+            properties:
+              auth_token:
+                type: string
+            example:
+              auth_token: ja80lvagsT9galj90ladsmlasg9023lgakljsda909Q=
+  /advertiser/campaign/get:
+    get:
+      tags:
+        - Campaign
+      description: Retrieve a campaign by ID.
+      operationId: getCampaignById
+      security:
+        - auth_token: []
+      parameters:
+        - name: campaign_id
+          in: query
+          description: Campaign ID
+          required: true
+          type: integer
+          format: int32
+        - name: include_archived
+          in: query
+          description: 'Set to "true" to include campaign even if it is archived.'
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/campaign'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/campaigns/list:
+    get:
+      tags:
+        - Campaign
+      description: Retrieve all campaigns and associated settings.
+      operationId: getCampaigns
+      security:
+        - auth_token: []
+      parameters:
+        - name: include_archived
+          in: query
+          description: 'Set to "true" to include archived campaigns.'
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          schema:
+            title: Array of Campaigns
+            type: array
+            items:
+              $ref: '#/definitions/campaign'
+  /advertiser/campaigns/create:
+    post:
+      tags:
+        - Campaign
+      description: |
+        Create a new campaign.
+      operationId: createCampaign
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: campaign
+          in: body
+          description: Object specifying campaign settings.
+          required: true
+          schema:
+            $ref: '#/definitions/newCampaign'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/campaign'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/campaign/update:
+    post:
+      tags:
+        - Campaign
+      description: "Update a campaign's settings."
+      operationId: updateCampaign
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: campaign
+          in: body
+          description: Object specifying campaign settings.
+          required: true
+          schema:
+            $ref: '#/definitions/editCampaign'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/campaign'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/campaign/delete:
+    delete:
+      tags:
+        - Campaign
+      description: 'Delete a campaign (cannot be undone). Note that this command is deprecated; use "/archive" instead.'
+      operationId: deleteCampaign
+      security:
+        - auth_token: []
+      parameters:
+        - name: campaign_id
+          in: query
+          description: Campaign ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Campaign not found
+          schema:
+            $ref: '#/definitions/errorModel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/campaign/archive:
+    post:
+      tags:
+        - Campaign
+      description: Archive a campaign. Campaign can be deleted but no longer edited.
+      operationId: archiveCampaign
+      security:
+        - auth_token: []
+      parameters:
+        - name: campaign_id
+          in: query
+          description: Campaign ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: 'Error, such as campaign is already archived.'
+          schema:
+            $ref: '#/definitions/errorModel'
+        '404':
+          description: Campaign not found
+          schema:
+            $ref: '#/definitions/errorModel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/ad/get:
+    get:
+      tags:
+        - Ad
+      description: Retrieve an ad by ID.
+      operationId: getAdById
+      security:
+        - auth_token: []
+      parameters:
+        - name: ad_id
+          in: query
+          description: Ad ID
+          required: true
+          type: integer
+          format: int32
+        - name: include_archived
+          in: query
+          description: 'Set to "true" to include ad even if it is archived.'
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ad'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/ad/list:
+    get:
+      tags:
+        - Ad
+      description: Retrieve all ads in a specified campaign.
+      operationId: getCampaignAds
+      security:
+        - auth_token: []
+      parameters:
+        - name: campaign_id
+          in: query
+          description: Campaign ID
+          required: true
+          type: integer
+          format: int32
+        - name: include_archived
+          in: query
+          description: 'Set to "true" to include archived ads.'
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          schema:
+            title: Array of Ads
+            type: array
+            items:
+              $ref: '#/definitions/ad'
+  /advertiser/ad/create:
+    post:
+      tags:
+        - Ad
+      description: Create ad inside a specified campaign.
+      operationId: createAd
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: ad
+          in: body
+          description: Ad details
+          required: true
+          schema:
+            $ref: '#/definitions/newAd'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ad'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/ad/update:
+    post:
+      tags:
+        - Ad
+      description: Update details of a specified ad.
+      operationId: updateAd
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: ad
+          in: body
+          description: Ad details
+          required: false
+          schema:
+            $ref: '#/definitions/updateAd'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ad'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/ad/delete:
+    delete:
+      tags:
+        - Ad
+      description: 'Delete an ad (cannot be undone). Note that this command is deprecated; use "/archive" instead.'
+      operationId: deleteAd
+      security:
+        - auth_token: []
+      parameters:
+        - name: ad_id
+          in: query
+          description: Ad ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Ad not found.
+          schema:
+            $ref: '#/definitions/errorModel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/ad/archive:
+    post:
+      tags:
+        - Ad
+      description: Archive an ad. Ad can be deleted but no longer edited.
+      operationId: archiveAd
+      security:
+        - auth_token: []
+      parameters:
+        - name: ad_id
+          in: query
+          description: Ad ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: 'Error, such as ad is already archived.'
+          schema:
+            $ref: '#/definitions/errorModel'
+        '404':
+          description: Ad not found.
+          schema:
+            $ref: '#/definitions/errorModel'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/blocklist/get:
+    get:
+      tags:
+        - Block Lists
+      description: Retrieve a block list by ID.
+      operationId: getBlocklist
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: domain_blocklist_id
+          in: query
+          description: Block list ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/blocklist'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/blocklist/list:
+    get:
+      tags:
+        - Block Lists
+      description: Retrieve all block lists.
+      operationId: listBlocklists
+      security:
+        - auth_token: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            title: Array of Block Lists
+            type: array
+            items:
+              $ref: '#/definitions/blocklistListing'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/blocklist/create:
+    post:
+      tags:
+        - Block Lists
+      description: Create a block list.
+      operationId: createBlocklist
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: blocklist
+          in: body
+          description: Block list details
+          required: true
+          schema:
+            $ref: '#/definitions/blocklistCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/blocklist'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/blocklist/update:
+    post:
+      tags:
+        - Block Lists
+      description: "Update a block list's settings."
+      operationId: updateBlocklist
+      security:
+        - auth_token: []
+      consumes:
+        - application/json
+      parameters:
+        - name: blocklist
+          in: body
+          description: Block list details
+          required: true
+          schema:
+            $ref: '#/definitions/blocklistUpdate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/blocklist'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errorModel'
+        '429':
+          description: Maximum Request Limit Exceeded
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/blocklist/delete:
+    delete:
+      tags:
+        - Block Lists
+      description: Delete a blocklist (cannot be undone).
+      operationId: deleteBlocklist
+      security:
+        - auth_token: []
+      parameters:
+        - name: domain_blocklist_id
+          in: query
+          description: Block list ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/bidbydomain/get:
+    get:
+      tags:
+        - Bid By Domain
+      description: Retrieve the domain-specific CPC bids for a campaign by ID.
+      operationId: getBidByDomain
+      security:
+        - auth_token: []
+      parameters:
+        - name: campaign_id
+          in: query
+          description: Campaign ID
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/bidByDomain'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /advertiser/bidbydomain/update:
+    post:
+      tags:
+        - Bid By Domain
+      description: Update the domain-specific CPC bids for a campaign.
+      operationId: updateBidByDomain
+      security:
+        - auth_token: []
+      parameters:
+        - name: bidByDomain
+          in: body
+          description: Update the domain-specific CPC bids for a campaign.
+          required: true
+          schema:
+            $ref: '#/definitions/bidByDomain'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/bidByDomain'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+securityDefinitions:
+  auth_token:
+    type: apiKey
+    name: auth_token
+    in: header
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication over SSL
+definitions:
+  campaign:
+    description: A campaign object
+    properties:
+      campaign_id:
+        type: integer
+        format: int32
+      status:
+        type: string
+        enum:
+          - Active
+          - Paused
+          - Archived
+      name:
+        type: string
+      cpc_desktop:
+        type: number
+      cpc_mobile:
+        type: number
+      cpc_tablet:
+        type: number
+      content_type:
+        type: string
+        enum:
+          - advertisement
+          - advertorial
+          - noncommercial
+      cap_day:
+        type: number
+        minimum: 50
+      cap_total:
+        type: number
+        minimum: 50
+      campaign_start:
+        type: string
+        description: Campaign start date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      campaign_end:
+        type: string
+        description: Campaign end date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      country_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - us
+            - ca
+            - gb
+            - fr
+            - de
+            - au
+            - nz
+            - in
+            - tr
+            - za
+            - xx
+      tracking_params:
+        type: string
+      domain_blocklist_id:
+        type: integer
+        format: int32
+      created_on:
+        type: string
+        format: dateTime
+      modified_on:
+        type: string
+        format: dateTime
+      device_os:
+        type: array
+        items:
+          type: string
+          enum:
+            - Android
+            - iOS
+            - Other
+      browser_types:
+        type: array
+        items:
+          type: string
+          enum:
+            - Chrome
+            - Safari
+            - Other
+      tier_targeting:
+        type: string
+        enum:
+          - tier1
+          - tier2
+          - all
+      state_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - AA
+            - AE
+            - AP
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - PA
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - WA
+            - WV
+            - WI
+            - WY
+  newCampaign:
+    description: New Campaign to create
+    required:
+      - name
+      - cpc_desktop
+      - cpc_mobile
+      - cpc_tablet
+      - content_type
+    properties:
+      name:
+        type: string
+      cpc_desktop:
+        type: number
+      cpc_mobile:
+        type: number
+      cpc_tablet:
+        type: number
+      content_type:
+        type: string
+        enum:
+          - advertisement
+          - advertorial
+          - noncommercial
+      cap_day:
+        type: number
+        minimum: 50
+      cap_total:
+        type: number
+        minimum: 50
+      campaign_start:
+        type: string
+        description: Campaign start date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      campaign_end:
+        type: string
+        description: Campaign end date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      country_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - us
+            - ca
+            - gb
+            - fr
+            - de
+            - au
+            - nz
+            - in
+            - tr
+            - za
+            - xx
+      tracking_params:
+        type: string
+      domain_blocklist_id:
+        type: integer
+        format: int32
+      device_os:
+        type: array
+        items:
+          type: string
+          enum:
+            - Android
+            - iOS
+            - Other
+      browser_types:
+        type: array
+        items:
+          type: string
+          enum:
+            - Chrome
+            - Safari
+            - Other
+      tier_targeting:
+        type: string
+        enum:
+          - tier1
+          - tier2
+          - all
+      state_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - AA
+            - AE
+            - AP
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - PA
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - WA
+            - WV
+            - WI
+            - WY
+    example:
+      name: New Campaign Example
+      cpc_desktop: 0.07
+      cpc_mobile: 0.06
+      cpc_tablet: 0.05
+      content_type: noncommercial
+      cap_day: 1000
+      cap_total: 40000
+      country_codes:
+        - us
+        - ca
+      tracking_params: utm_source=123
+      domain_blocklist_id: 55
+  editCampaign:
+    description: A campaign object
+    required:
+      - campaign_id
+    properties:
+      campaign_id:
+        type: integer
+        format: int32
+      status:
+        type: string
+        enum:
+          - Active
+          - Paused
+      name:
+        type: string
+      cpc_desktop:
+        type: number
+      cpc_mobile:
+        type: number
+      cpc_tablet:
+        type: number
+      cap_day:
+        type: number
+        minimum: 50
+      cap_total:
+        type: number
+        minimum: 50
+      campaign_start:
+        type: string
+        description: Campaign start date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      campaign_end:
+        type: string
+        description: Campaign end date in YYYY-MM-DD format
+        format: YYYY-MM-DD
+      country_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - us
+            - ca
+            - gb
+            - fr
+            - de
+            - au
+            - nz
+            - in
+            - tr
+            - za
+            - xx
+      tracking_params:
+        type: string
+      domain_blocklist_id:
+        type: integer
+        format: int32
+      device_os:
+        type: array
+        items:
+          type: string
+          enum:
+            - Android
+            - iOS
+            - Other
+      browser_types:
+        type: array
+        items:
+          type: string
+          enum:
+            - Chrome
+            - Safari
+            - Other
+      state_codes:
+        type: array
+        items:
+          type: string
+          enum:
+            - AA
+            - AE
+            - AP
+            - AL
+            - AK
+            - AZ
+            - AR
+            - CA
+            - CO
+            - CT
+            - DE
+            - DC
+            - FL
+            - GA
+            - HI
+            - ID
+            - IL
+            - IN
+            - IA
+            - KS
+            - KY
+            - LA
+            - ME
+            - MT
+            - NE
+            - NV
+            - NH
+            - NJ
+            - NM
+            - NY
+            - NC
+            - ND
+            - OH
+            - OK
+            - OR
+            - MD
+            - MA
+            - MI
+            - MN
+            - MS
+            - MO
+            - PA
+            - RI
+            - SC
+            - SD
+            - TN
+            - TX
+            - UT
+            - VT
+            - VA
+            - WA
+            - WV
+            - WI
+            - WY
+  ad:
+    type: object
+    properties:
+      campaign_id:
+        type: integer
+        format: int32
+      ad_id:
+        type: integer
+        format: int32
+      landing_page:
+        type: string
+      title:
+        type: string
+      image:
+        type: string
+      content_rating:
+        type: string
+        enum:
+          - G
+          - PG
+          - PG13
+          - R
+      approval_status:
+        type: string
+        enum:
+          - Approved
+          - Rejected
+          - Pending
+      status:
+        type: string
+        enum:
+          - Active
+          - Paused
+          - Archived
+      created_on:
+        type: string
+        format: dateTime
+      modified_on:
+        type: string
+        format: dateTime
+      rejection_reason:
+        type: string
+      grossness_rating:
+        type: string
+        enum:
+          - None
+          - Low
+          - High
+      pending_changes:
+        type: integer
+        format: int32
+  newAd:
+    description: New Ad to create
+    type: object
+    required:
+      - campaign_id
+      - landing_page
+      - title
+      - image_url
+    properties:
+      campaign_id:
+        type: integer
+        format: int32
+      landing_page:
+        type: string
+      title:
+        type: string
+        maxLength: 60
+      image_url:
+        type: string
+    example:
+      campaign_id: 1
+      landing_page: 'http://content.ad'
+      title: New Ad
+      image_url: 'http://blogs-images.forbes.com/limyunghui/files/2012/09/coffee_bean-square-300.jpg'
+  updateAd:
+    description: Ad to update
+    type: object
+    properties:
+      ad_id:
+        type: integer
+        format: int32
+      title:
+        type: string
+        maxLength: 60
+      image_url:
+        type: string
+      status:
+        type: string
+        enum:
+          - Active
+          - Paused
+    required:
+      - ad_id
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  blocklistBase:
+    description: fields shared by all blocklist entities
+    type: object
+    properties:
+      blocklist_name:
+        type: string
+        maxLength: 50
+      assigned_to_campaign_ids:
+        type: array
+        items:
+          type: integer
+          format: int32
+  blocklistListing:
+    allOf:
+      - $ref: '#/definitions/blocklistBase'
+      - description: Blocklist without the domain IDs
+      - type: object
+        properties:
+          domain_blocklist_id:
+            type: integer
+            format: int32
+        required:
+          - domain_blocklist_id
+          - blocklist_name
+          - assigned_to_campaign_ids
+  blocklistCreate:
+    allOf:
+      - $ref: '#/definitions/blocklistBase'
+      - description: Create blocklist entity
+      - type: object
+        properties:
+          blocks:
+            type: array
+            items:
+              type: integer
+              format: int32
+        required:
+          - blocklist_name
+  blocklistUpdate:
+    allOf:
+      - $ref: '#/definitions/blocklistBase'
+      - description: A block list update object
+      - type: object
+        properties:
+          domain_blocklist_id:
+            type: integer
+            format: int32
+          blocks:
+            type: array
+            items:
+              type: integer
+              format: int32
+        required:
+          - domain_blocklist_id
+  blocklist:
+    allOf:
+      - $ref: '#/definitions/blocklistUpdate'
+      - description: A block list object
+      - type: object
+        required:
+          - blocklist_name
+          - blocks
+          - assigned_to_campaign_ids
+  domainCpc:
+    description: Domain to CPC
+    type: object
+    properties:
+      domain_id:
+        type: integer
+        format: int32
+      cpc:
+        type: number
+    required:
+      - domain_id
+      - cpc
+  bidByDomain:
+    description: Bid-by-domain
+    type: object
+    properties:
+      campaign_id:
+        type: integer
+        format: int32
+      domain_cpcs_desktop:
+        type: array
+        items:
+          $ref: '#/definitions/domainCpc'
+      domain_cpcs_tablet:
+        type: array
+        items:
+          $ref: '#/definitions/domainCpc'
+      domain_cpcs_mobile:
+        type: array
+        items:
+          $ref: '#/definitions/domainCpc'
+    required:
+      - campaign_id
