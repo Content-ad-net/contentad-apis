@@ -60,6 +60,12 @@ paths:
           in: query
           name: groupByDay
           description: 'If true, return entries by day rather than by hour.'
+        - schema:
+            type: string
+            default: 'Basic '
+          in: header
+          name: Authorization
+          required: true
       responses:
         '200':
           description: OK
@@ -84,6 +90,44 @@ paths:
           in: query
           name: output
           description: Defines response format as either XML or JSON as specified.
+        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
+        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
+          required: true
+        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
+        - schema:
+            type: string
+            default: 'Basic '
+          in: header
+          name: Authorization
+          required: true
+        - schema:
+            type: string
+            example: '2020-07-01T00:00:00-08:00'
+            format: date-time
+            default: '2020-07-01T00:00:00-08:00'
+          in: query
+          name: startDate
+          description: |
+            Defines beginning of report date range. Must be URL encoded. Example: 2020-07-01T00:00:00-08:00
+        - schema:
+            type: string
+            format: date-time
+            default: '2020-07-02T00:00:00-08:00'
+            example: '2020-07-02T00:00:00-08:00'
+          in: query
+          name: endDate
+          description: 'Defines end of report date range. Must be URL encoded. Example: 2020-07-02T00:00:00-08:00'
+        - schema:
+            type: string
+            default: aggregate
+            example: aggregate
+            enum:
+              - hour
+              - day
+              - aggregate
+          in: query
+          name: groupTime
+          description: 'Return entries by hour, day or aggregate.'
       tags:
         - Publisher Reports
       description: |-
