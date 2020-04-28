@@ -60,12 +60,14 @@ paths:
           in: query
           name: groupByDay
           description: 'If true, return entries by day rather than by hour.'
+        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
         - schema:
             type: string
             default: 'Basic '
           in: header
           name: Authorization
           required: true
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
       responses:
         '200':
           description: OK
@@ -90,16 +92,14 @@ paths:
           in: query
           name: output
           description: Defines response format as either XML or JSON as specified.
-        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
-        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
           required: true
-        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
         - schema:
             type: string
             default: 'Basic '
           in: header
           name: Authorization
           required: true
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
         - schema:
             type: string
             example: '2020-07-01T00:00:00-08:00'
@@ -134,6 +134,254 @@ paths:
         Content.ad offers this REST API to make the data in the Traffic Sources Report in a publisher’s account login available in either XML or JSON format.
 
         Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+  /publisher/click:
+    get:
+      summary: Publisher Click Report
+      tags:
+        - Publisher Reports
+      responses:
+        '200':
+          description: OK
+      operationId: publisherClickReport
+      description: |-
+        Content.ad offers this REST API to make detailed click data available to publishers in either XML or JSON format.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+      parameters:
+        - schema:
+            type: string
+            default: 'Basic '
+          in: header
+          name: Authorization
+          required: true
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
+        - schema:
+            type: string
+            default: all
+            example: 'US,CA,UK'
+          in: query
+          name: countries
+          description: Return only performance of the specified countries. Expects a comma delimited list.
+        - schema:
+            type: string
+            default: all
+            enum:
+              - desktop
+              - tablet
+              - all
+            example: all
+          in: query
+          name: device
+          description: Return only preformance of the specified device type.
+        - schema:
+            type: string
+            default: xml
+            example: xml
+          in: query
+          name: output
+          description: Defines response as either XML or JSON as specified.
+        - schema:
+            type: string
+            example: '2020-07-01T00:00:00-08:00'
+            default: '2020-07-01T00:00:00-08:00'
+          in: query
+          name: startDate
+          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the beginning of the day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+        - schema:
+            type: string
+            default: '2020-07-02T00:00:00-08:00'
+            example: '2020-07-02T00:00:00-08:00'
+          in: query
+          name: endDate
+          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the end of the day, Pacific Time. Example: 2020-07-02T00:00:00-08:00'
+        - schema:
+            type: string
+            format: ''
+            default: 'true'
+            example: 'true'
+            enum:
+              - 'true'
+              - 'false'
+          in: query
+          name: groupByDomain
+          description: 'If true, return data separated by domain.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByWidget
+          description: 'If true, return data separated by widget.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByCountry
+          description: 'If true, return data separated by country.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByDevice
+          description: 'If true, return data separated by device.'
+        - schema:
+            type: string
+            default: 'true'
+            example: 'true'
+            enum:
+              - 'true'
+              - 'false'
+          in: query
+          name: groupBySource
+          description: 'If true, return data separated by source (clientId).'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByCampaign
+          description: 'If true, return data separated by campaign (clientId2).'
+        - schema:
+            type: string
+            default: aggregate
+            enum:
+              - hour
+              - day
+              - aggregate
+            example: aggregate
+          in: query
+          name: groupTime
+          description: 'Returns entries by hour, day or aggregate'
+    parameters: []
+  /publisher/device-geo:
+    get:
+      summary: Device Geo Reporting
+      tags:
+        - Publisher Reports
+      responses:
+        '200':
+          description: OK
+      operationId: deviceGeo
+      description: |-
+        Content.ad offers a REST API for a publisher to receive device and geo reporting data in either XML or JSON format. Please note that the report can only be run for a maximum period of 31 days.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+      parameters:
+        - schema:
+            type: string
+            default: 'Basic '
+          in: header
+          name: Authorization
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
+          required: true
+        - schema:
+            type: string
+            default: all
+            example: 'US,CA,UK'
+          in: query
+          name: countries
+          description: Return only performance of the specified countries. Expects a comma delimited list.
+        - schema:
+            type: string
+            default: all
+            enum:
+              - desktop
+              - tablet
+              - all
+            example: all
+          in: query
+          name: device
+          description: Return only preformance of the specified device type.
+        - schema:
+            type: string
+            default: xml
+            example: xml
+            enum:
+              - xml
+              - json
+          in: query
+          name: output
+          description: Defines response as either XML or JSON as specified.
+        - schema:
+            type: string
+            example: '2020-07-01T00:00:00-08:00'
+            default: '2020-07-01T00:00:00-08:00'
+          in: query
+          name: startDate
+          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the beginning of the day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+        - schema:
+            type: string
+            default: '2020-07-02T00:00:00-08:00'
+            example: '2020-07-02T00:00:00-08:00'
+          in: query
+          name: endDate
+          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the end of the day, Pacific Time. Example: 2020-07-02T00:00:00-08:00'
+        - schema:
+            type: string
+            format: ''
+            default: 'true'
+            example: 'true'
+            enum:
+              - 'true'
+              - 'false'
+          in: query
+          name: groupByDomain
+          description: 'If true, return data separated by domain.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByWidget
+          description: 'If true, return data separated by widget.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByCountry
+          description: 'If true, return data separated by country.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: groupByDevice
+          description: 'If true, return data separated by device.'
+        - schema:
+            type: string
+            default: aggregate
+            enum:
+              - hour
+              - day
+              - aggregate
+            example: aggregate
+          in: query
+          name: groupTime
+          description: 'Returns entries by hour, day or aggregate'
 components:
   schemas: {}
   securitySchemes:

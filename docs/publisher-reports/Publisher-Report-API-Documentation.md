@@ -2,7 +2,7 @@
 tags: [Publisher Reports]
 ---
 
-# Publisher-Report-API-Documentation
+# Publisher Report API Documentation
 
 Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
 
