@@ -10,7 +10,7 @@ Please note that this feature requires a unique API key and password. Please con
 Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
 
 ## Implementation FAQ
-How often is performance data updated?
+###How often is performance data updated?
 Performance reports are updated by Content.ad once per hour.
 
 ### How long can I run the report for?

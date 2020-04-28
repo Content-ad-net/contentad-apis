@@ -20,14 +20,11 @@ paths:
       tags:
         - Publisher Reports
       operationId: publisherReport
-      description: Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
+      description: |-
+        Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
       security: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
       parameters:
         - schema:
             type: string
@@ -74,7 +71,7 @@ paths:
       responses:
         '200':
           description: OK
-      operationId: get-publisher-traffic-sources
+      operationId: trafficSources
       security: []
       parameters:
         - schema:

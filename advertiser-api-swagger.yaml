@@ -43,6 +43,8 @@ paths:
                 type: string
             example:
               auth_token: ja80lvagsT9galj90ladsmlasg9023lgakljsda909Q=
+      parameters:
+        - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
   /advertiser/campaign/get:
     get:
       tags:
@@ -569,6 +571,7 @@ securityDefinitions:
     type: apiKey
     name: auth_token
     in: header
+    description: ''
   basicAuth:
     type: basic
     description: HTTP Basic Authentication over SSL
@@ -1205,3 +1208,9 @@ definitions:
           $ref: '#/definitions/domainCpc'
     required:
       - campaign_id
+tags:
+  - name: Authentication
+  - name: Campaign
+  - name: Ad
+  - name: Block Lists
+  - name: Bid By Domain
