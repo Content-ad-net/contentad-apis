@@ -2,16 +2,20 @@ swagger: '2.0'
 info:
   version: '1.0'
   title: Content.ad Advertiser API
-  description: |
+  description: |-
     URL: https://transact.content.ad/transact/1.0
 
-    The Content.ad advertiser API can be used to manage your campaigns and ads.  Please note the API limits: http://help.content.ad/advertiser-transactional-api-limits/
+    The Content.ad advertiser API can be used to manage your campaigns and ads.
 
     Separate reporting APIs are available upon request.
-host: 'staging.transact.content.ad:8080'
+  contact:
+    email: support@content.ad
+    url: 'https://help.content.ad'
+    name: Content.ad Support
+host: transact.content.ad
 basePath: /transact/1.0
 schemes:
-  - http
+  - https
 produces:
   - application/json
 paths:

@@ -6,21 +6,28 @@ info:
     Content.ad offers this REST API to make reporting data available in either XML or JSON format.
 
     Please note that this feature requires a unique API key and API password. Please contact your account representative for more information.
+  contact:
+    name: Content.ad Support
+    url: 'https://help.content.ad'
+    email: support@content.ad
 servers:
-  - url: 'https://rest.content.ad'
+  - url: 'https://rest.content.ad/reports'
     description: Rest API
 paths:
-  /reports/publisher:
+  /publisher:
     get:
       summary: Publisher Report
       tags:
         - Publisher Reports
-      responses: {}
       operationId: publisherReport
       description: Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
-      security:
-        - basicAuth: []
-      requestBody: {}
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
       parameters:
         - schema:
             type: string
@@ -35,7 +42,7 @@ paths:
         - schema:
             type: string
             format: date-time
-            default: 'yesterday, beinning of day, Pacific Time'
+            default: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
           description: |-
@@ -45,17 +52,47 @@ paths:
         - schema:
             type: string
             format: date-time
-            default: 'yesterday, beginning of day, Pacific Time'
+            default: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
           description: 'Defines end of report date range. Must be URL encoded. Example: 2016-01-26T00:00:00-08:00'
         - schema:
             type: boolean
             default: 'false'
-            example: 'false'
+            example: 0
           in: query
           name: groupByDay
           description: 'If true, return entries by day rather than by hour.'
+      responses:
+        '200':
+          description: OK
+          headers: {}
+    parameters: []
+  /publisher/traffic-sources:
+    get:
+      summary: Traffic Sources Report
+      responses:
+        '200':
+          description: OK
+      operationId: get-publisher-traffic-sources
+      security: []
+      parameters:
+        - schema:
+            type: string
+            default: xml
+            example: xml
+            enum:
+              - xml
+              - json
+          in: query
+          name: output
+          description: Defines response format as either XML or JSON as specified.
+      tags:
+        - Publisher Reports
+      description: |-
+        Content.ad offers this REST API to make the data in the Traffic Sources Report in a publisher’s account login available in either XML or JSON format.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
 components:
   schemas: {}
   securitySchemes:
@@ -66,3 +103,6 @@ components:
     basicAuth:
       type: http
       scheme: basic
+tags:
+  - name: Publisher Reports
+    description: Content.ad offers this REST API to make reporting data available in either XML or JSON format.
