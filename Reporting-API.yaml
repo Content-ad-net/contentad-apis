@@ -40,8 +40,8 @@ paths:
       parameters:
         - schema:
             type: string
-            default: xml
-            example: xml
+            default: json
+            example: json
             enum:
               - xml
               - json
@@ -52,19 +52,21 @@ paths:
             type: string
             format: date-time
             default: '2020-07-01T00:00:00-08:00'
+            example: '2020-07-01 OR  2020-07-01T00:00:00-08:00'
+            enum: []
           in: query
           name: startDate
           description: |-
             Defines beginning of report date range.
-            Must be URL encoded.
-            Example: 2016-01-25T00:00:00-08:00
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time.
+            Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
         - schema:
             type: string
             format: date-time
             default: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Example: 2016-01-26T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time. Example: 2016-01-26T00:00:00-08:00'
         - schema:
             type: string
             default: 'false'
@@ -74,7 +76,7 @@ paths:
               - 'false'
           in: query
           name: groupByDay
-          description: 'If true, return entries by day rather than by hour.'
+          description: 'Default report groups by hour. To group by day, set to true.'
         - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
         - schema:
             type: string
@@ -83,6 +85,11 @@ paths:
           name: Authorization
           required: true
           description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
+        - schema:
+            type: integer
+          in: query
+          name: domainId
+          description: Display results for only the specified Domain ID
       responses:
         '200':
           description: OK
@@ -129,7 +136,101 @@ paths:
                                       type: integer
                                     Revenue:
                                       type: number
-              examples: {}
+              examples:
+                JSON Group by Day Example:
+                  value:
+                    Domains:
+                      - ID: 324801
+                        Name: mapdirectionspro.co
+                        Widgets:
+                          - Guid: 05d81a8c-a76c-4506-aaae-d1c06a9a4816
+                            Description: 3 Unit Push Widget
+                            Dates:
+                              - Time: '2020-02-11'
+                                Impressions: 133269
+                                CTR: 0.0346
+                                ECPM: 1.8747
+                                ECPA: 249.8364
+                                ClicksPaid: 4620
+                                ClicksInternal: 0
+                                Revenue: 249.84
+                      - ID: 323790
+                        Name: mapmyjourney.co
+                        Widgets:
+                          - Guid: 50588baa-3ac3-44d9-821a-942ad1c231e3
+                            Description: Widget 59
+                            Dates:
+                              - Time: '2020-02-11'
+                                Impressions: 103331
+                                CTR: 0.0387
+                                ECPM: 1.8536
+                                ECPA: 106.4055
+                                ClicksPaid: 4007
+                                ClicksInternal: 0
+                                Revenue: 191.53
+                'JSON Group by Day, By Hour':
+                  value:
+                    Domains:
+                      - ID: 332251
+                        Name: locatepackages.com
+                        Widgets:
+                          - Guid: 3f582213-69b0-4d55-87ed-58e88712d957
+                            Description: push-notification-api
+                            Dates:
+                              - Time: '2020-02-11T00:00:00-08:00'
+                                Impressions: 238
+                                CTR: 0.0462
+                                ECPM: 0.8697
+                                ECPA: 0.207
+                                ClicksPaid: 11
+                                ClicksInternal: 0
+                                Revenue: 0.21
+                      - ID: 324801
+                        Name: mapdirectionspro.co
+                        Widgets:
+                          - Guid: 05d81a8c-a76c-4506-aaae-d1c06a9a4816
+                            Description: 3 Unit Push Widget
+                            Dates:
+                              - Time: '2020-02-11T00:00:00-08:00'
+                                Impressions: 93
+                                CTR: 0.0107
+                                ECPM: 0.1065
+                                ECPA: 0.0099
+                                ClicksPaid: 1
+                                ClicksInternal: 0
+                                Revenue: 0.01
+                No data avaialble:
+                  value:
+                    Domains: []
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Improper Start/End Date Fromat:
+                  value:
+                    errors:
+                      - startDate does not allow time when grouping by day
+                      - endDate does not allow time when grouping by day
+                Date Range Too Large:
+                  value:
+                    errors:
+                      - Start time cannot be more than 31 days apart from end time
+                Start date after end date:
+                  value:
+                    errors:
+                      - Start time cannot be after end time
     parameters: []
   /publisher/traffic-sources:
     get:
@@ -481,11 +582,11 @@ paths:
           description: Return only performance of the specified countries. Expects a comma delimited list.
         - schema:
             type: string
-            default: all
+            default: moible
             enum:
               - desktop
               - mobile
-            example: all
+            example: mobile
           in: query
           name: device
           description: Return only preformance of the specified device type.
