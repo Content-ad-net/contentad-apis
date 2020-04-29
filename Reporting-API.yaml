@@ -88,9 +88,48 @@ paths:
           description: OK
           headers: {}
           content:
-            application/xml:
+            application/json:
               schema:
                 type: object
+                properties:
+                  Domains:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ID:
+                          type: integer
+                        Name:
+                          type: string
+                        Widgets:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              Guid:
+                                type: string
+                              Description:
+                                type: string
+                              Dates:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    Time:
+                                      type: string
+                                    Impressions:
+                                      type: integer
+                                    CTR:
+                                      type: number
+                                    ECPM:
+                                      type: number
+                                    ClicksPaid:
+                                      type: integer
+                                    ClicksInternational:
+                                      type: integer
+                                    Revenue:
+                                      type: number
+              examples: {}
     parameters: []
   /publisher/traffic-sources:
     get:
@@ -98,6 +137,42 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Time:
+                          type: string
+                        DomainID:
+                          type: integer
+                        DomainName:
+                          type: string
+                        WidgetID:
+                          type: integer
+                        WidgetGUID:
+                          type: string
+                        WidgetDescription:
+                          type: string
+                        Source:
+                          type: string
+                        Campaign:
+                          type: string
+                        Impressions:
+                          type: integer
+                        CTR:
+                          type: number
+                        ClicksPaid:
+                          type: integer
+                        ClicksInternational:
+                          type: integer
+                        Revenue:
+                          type: number
       operationId: trafficSources
       security: []
       parameters:
@@ -172,7 +247,34 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: {}
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                        domain_id:
+                          type: integer
+                        domain_name:
+                          type: string
+                        widget_id:
+                          type: integer
+                        widget_description:
+                          type: string
+                        device:
+                          type: string
+                        country:
+                          type: string
+                        source:
+                          type: string
+                        campaign:
+                          type: string
+                        clicks:
+                          type: integer
+                        revenue:
+                          type: number
               examples: {}
       operationId: publisherClickReport
       description: |-
@@ -313,6 +415,46 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                        domain_id:
+                          type: integer
+                        domain_name:
+                          type: string
+                        widget_id:
+                          type: integer
+                        widget_guid:
+                          type: string
+                        widget_description:
+                          type: string
+                        device:
+                          type: string
+                        country:
+                          type: string
+                        impressions:
+                          type: integer
+                        ctr:
+                          type: number
+                        ecpm:
+                          type: number
+                        clicks_paid:
+                          type:
+                            - string
+                            - integer
+                        clicks_international:
+                          type: integer
+                        revenue:
+                          type: number
       operationId: deviceGeo
       description: |-
         Content.ad offers a REST API for a publisher to receive device and geo reporting data in either XML or JSON format. Please note that the report can only be run for a maximum period of 31 days.
@@ -342,8 +484,7 @@ paths:
             default: all
             enum:
               - desktop
-              - tablet
-              - all
+              - mobile
             example: all
           in: query
           name: device
