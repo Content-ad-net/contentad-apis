@@ -3,9 +3,17 @@ info:
   title: Content.ad Reporting API
   version: '1.0'
   description: |-
+    # Introduction
     Content.ad offers this REST API to make reporting data available in either XML or JSON format.
 
     Please note that this feature requires a unique API key and API password. Please contact your account representative for more information.
+
+    ## Implementation FAQ
+    ### How often is performance data updated?
+    Performance reports are updated by Content.ad once per hour.
+
+    ### How long can I run the report for?
+    This report can be run for any period 31 days or less. You can use the "startDate" and "endDate" parameters to specify a date range.
   contact:
     name: Content.ad Support
     url: 'https://help.content.ad'
@@ -24,6 +32,10 @@ paths:
         Content.ad offers this REST API to make the data in the Widget Summary Report in a publisher’s account login available in either XML or JSON format.
 
         Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How is reporting data grouped?
+        This report can group data by hour or day and groups performance by domain and widget. See the "Query Parameters" section for more information.
       security: []
       parameters:
         - schema:
@@ -54,9 +66,12 @@ paths:
           name: endDate
           description: 'Defines end of report date range. Must be URL encoded. Example: 2016-01-26T00:00:00-08:00'
         - schema:
-            type: boolean
+            type: string
             default: 'false'
-            example: 0
+            example: 'false'
+            enum:
+              - 'true'
+              - 'false'
           in: query
           name: groupByDay
           description: 'If true, return entries by day rather than by hour.'
@@ -72,6 +87,10 @@ paths:
         '200':
           description: OK
           headers: {}
+          content:
+            application/xml:
+              schema:
+                type: object
     parameters: []
   /publisher/traffic-sources:
     get:
@@ -134,6 +153,13 @@ paths:
         Content.ad offers this REST API to make the data in the Traffic Sources Report in a publisher’s account login available in either XML or JSON format.
 
         Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How do I configure my sources and campaigns so that they appear in this report?
+        See our FAQ on [setting up the Traffic Sources Report](https://help.content.ad/en/articles/1498868-how-can-i-view-reports-by-url-traffic-source-or-a-custom-dimension).
+
+        ### How is reporting data grouped?
+        This report can group data by hour, day or aggregate time period and groups performance by widget, source (clientID) and campaign (clientID2). See the "Query Parameters" section for more information.
   /publisher/click:
     get:
       summary: Publisher Click Report
@@ -142,11 +168,22 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
       operationId: publisherClickReport
       description: |-
+        ## Introduction
         Content.ad offers this REST API to make detailed click data available to publishers in either XML or JSON format.
 
         Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How is reporting data grouped?
+        Depending on your preferences, you can view the specific country, device type, source, and campaign of each widget click in a given hour, day, or aggregate time period. See the "Query Parameters" section for more information. Because of the granularity of this data, impressions are not available via this report, so we recommend joining this information to your analytics data if you need to measure impressions to calculate CTR and eCPM at this level.
       parameters:
         - schema:
             type: string
@@ -167,7 +204,7 @@ paths:
             default: all
             enum:
               - desktop
-              - tablet
+              - mobile
               - all
             example: all
           in: query
@@ -266,6 +303,7 @@ paths:
           in: query
           name: groupTime
           description: 'Returns entries by hour, day or aggregate'
+      requestBody: {}
     parameters: []
   /publisher/device-geo:
     get:
@@ -280,6 +318,10 @@ paths:
         Content.ad offers a REST API for a publisher to receive device and geo reporting data in either XML or JSON format. Please note that the report can only be run for a maximum period of 31 days.
 
         Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How is reporting data grouped?
+        Depending on your preferences, you can view the specific country, device type, and domain, of each widget click in a given hour, day, or aggregate time period. See the "Query Parameters" section for more information. Because of the granularity of this data, impressions are not available via this report, so we recommend joining this information to your analytics data if you need to measure impressions to calculate CTR and eCPM at this level.
       parameters:
         - schema:
             type: string

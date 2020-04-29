@@ -578,6 +578,7 @@ securityDefinitions:
 definitions:
   campaign:
     description: A campaign object
+    type: object
     properties:
       campaign_id:
         type: integer
@@ -593,8 +594,6 @@ definitions:
       cpc_desktop:
         type: number
       cpc_mobile:
-        type: number
-      cpc_tablet:
         type: number
       content_type:
         type: string
@@ -726,20 +725,26 @@ definitions:
             - WY
   newCampaign:
     description: New Campaign to create
-    required:
-      - name
-      - cpc_desktop
-      - cpc_mobile
-      - cpc_tablet
-      - content_type
+    example:
+      name: New Campaign Example
+      cpc_desktop: 0.07
+      cpc_mobile: 0.06
+      cpc_tablet: 0.05
+      content_type: noncommercial
+      cap_day: 1000
+      cap_total: 40000
+      country_codes:
+        - us
+        - ca
+      tracking_params: utm_source=123
+      domain_blocklist_id: 55
+    type: object
     properties:
       name:
         type: string
       cpc_desktop:
         type: number
       cpc_mobile:
-        type: number
-      cpc_tablet:
         type: number
       content_type:
         type: string
@@ -863,23 +868,14 @@ definitions:
             - WV
             - WI
             - WY
-    example:
-      name: New Campaign Example
-      cpc_desktop: 0.07
-      cpc_mobile: 0.06
-      cpc_tablet: 0.05
-      content_type: noncommercial
-      cap_day: 1000
-      cap_total: 40000
-      country_codes:
-        - us
-        - ca
-      tracking_params: utm_source=123
-      domain_blocklist_id: 55
+    required:
+      - name
+      - cpc_desktop
+      - cpc_mobile
+      - content_type
   editCampaign:
     description: A campaign object
-    required:
-      - campaign_id
+    type: object
     properties:
       campaign_id:
         type: integer
@@ -894,8 +890,6 @@ definitions:
       cpc_desktop:
         type: number
       cpc_mobile:
-        type: number
-      cpc_tablet:
         type: number
       cap_day:
         type: number
@@ -1007,6 +1001,8 @@ definitions:
             - WV
             - WI
             - WY
+    required:
+      - campaign_id
   ad:
     type: object
     properties:
@@ -1195,10 +1191,6 @@ definitions:
         type: integer
         format: int32
       domain_cpcs_desktop:
-        type: array
-        items:
-          $ref: '#/definitions/domainCpc'
-      domain_cpcs_tablet:
         type: array
         items:
           $ref: '#/definitions/domainCpc'
