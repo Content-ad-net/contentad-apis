@@ -137,7 +137,7 @@ paths:
                                     Revenue:
                                       type: number
               examples:
-                JSON Group by Day Example:
+                JSON Group by Day:
                   value:
                     Domains:
                       - ID: 324801
@@ -168,7 +168,7 @@ paths:
                                 ClicksPaid: 4007
                                 ClicksInternal: 0
                                 Revenue: 191.53
-                'JSON Group by Day, By Hour':
+                JSON Group dy Hour:
                   value:
                     Domains:
                       - ID: 332251
@@ -199,6 +199,23 @@ paths:
                                 ClicksPaid: 1
                                 ClicksInternal: 0
                                 Revenue: 0.01
+                JSON Group by Domain:
+                  value:
+                    Domains:
+                      - ID: 324801
+                        Name: mapdirectionspro.co
+                        Widgets:
+                          - Guid: 05d81a8c-a76c-4506-aaae-d1c06a9a4816
+                            Description: 3 Unit Push Widget
+                            Dates:
+                              - Time: '2020-02-11'
+                                Impressions: 133269
+                                CTR: 0.0346
+                                ECPM: 1.8747
+                                ECPA: 249.8364
+                                ClicksPaid: 4620
+                                ClicksInternal: 0
+                                Revenue: 249.84
                 No data avaialble:
                   value:
                     Domains: []
@@ -231,6 +248,8 @@ paths:
                   value:
                     errors:
                       - Start time cannot be after end time
+        '401':
+          description: Unauthorized
     parameters: []
   /publisher/traffic-sources:
     get:
@@ -274,6 +293,124 @@ paths:
                           type: integer
                         Revenue:
                           type: number
+              examples:
+                Group By Hour:
+                  value:
+                    Rows:
+                      - Time: '2020-02-22T00:00:00-08:00'
+                        DomainID: 159210
+                        DomainName: thedailyheel.com
+                        WidgetID: 158866
+                        WidgetGUID: CAAC95EE-B44B-4817-B286-152D5AFF1246
+                        WidgetDescription: DailyHeel_Header_1x2_MB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 70
+                        CTR: 5.7143
+                        ECPM: 1.6114
+                        ClicksPaid: 4
+                        ClicksInternal: 0
+                        Revenue: 0.11
+                      - Time: '2020-02-22T00:00:00-08:00'
+                        DomainID: 159210
+                        DomainName: thedailyheel.com
+                        WidgetID: 227712
+                        WidgetGUID: 26A37F19-A635-4175-835F-CF724002FE0F
+                        WidgetDescription: DailyHeel_BelowArticle_1x6_MB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 85
+                        CTR: 1.1765
+                        ECPM: 0.2
+                        ClicksPaid: 1
+                        ClicksInternal: 0
+                        Revenue: 0.02
+                Group By Day:
+                  value:
+                    Rows:
+                      - Time: '2020-02-22'
+                        DomainID: 140845
+                        DomainName: omghype.com
+                        WidgetID: 407565
+                        WidgetGUID: B87D13BB-EBCC-4B28-8AFB-0380174C957A
+                        WidgetDescription: OMGHype_BA_Art_FB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 7
+                        CTR: 71.4286
+                        ECPM: 1.2143
+                        ClicksPaid: 5
+                        ClicksInternal: 0
+                        Revenue: 0.01
+                      - Time: '2020-02-22'
+                        DomainID: 151762
+                        DomainName: veryhangry.com
+                        WidgetID: 124943
+                        WidgetGUID: 41C94F14-6E79-4481-B1DD-2DED0E037650
+                        WidgetDescription: VeryHangry_SlideUp_MB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 3
+                        CTR: 0
+                        ECPM: 0
+                        ClicksPaid: 0
+                        ClicksInternal: 0
+                        Revenue: 0
+                Group By Aggregate:
+                  value:
+                    Rows:
+                      - Time: null
+                        DomainID: 140845
+                        DomainName: omghype.com
+                        WidgetID: 407565
+                        WidgetGUID: B87D13BB-EBCC-4B28-8AFB-0380174C957A
+                        WidgetDescription: OMGHype_BA_Art_FB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 7
+                        CTR: 71.4286
+                        ECPM: 1.2143
+                        ClicksPaid: 5
+                        ClicksInternal: 0
+                        Revenue: 0.01
+                      - Time: null
+                        DomainID: 151762
+                        DomainName: veryhangry.com
+                        WidgetID: 124943
+                        WidgetGUID: 41C94F14-6E79-4481-B1DD-2DED0E037650
+                        WidgetDescription: VeryHangry_SlideUp_MB
+                        Source: ''
+                        Campaign: ''
+                        Impressions: 3
+                        CTR: 0
+                        ECPM: 0
+                        ClicksPaid: 0
+                        ClicksInternal: 0
+                        Revenue: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Start Date After End Date:
+                  value:
+                    errors:
+                      - Start time cannot be after end time
+                Future Dates:
+                  value:
+                    errors:
+                      - End time cannot be in the future
+                Exceeds Date Range:
+                  value:
+                    errors:
+                      - Start time cannot be more than 31 days apart from end time
       operationId: trafficSources
       security: []
       parameters:
@@ -376,7 +513,285 @@ paths:
                           type: integer
                         revenue:
                           type: number
-              examples: {}
+              examples:
+                'Group by Time, Source, & Widget':
+                  value:
+                    rows:
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: null
+                        domain_name: null
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: null
+                        country: null
+                        source: optin_01292020_missing
+                        campaign: null
+                        clicks: 60
+                        revenue: 2.62
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: null
+                        domain_name: null
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: null
+                        country: null
+                        source: optin_01302020_missing
+                        campaign: null
+                        clicks: 53
+                        revenue: 2.32
+                Group By Day:
+                  value:
+                    rows:
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group By Hour:
+                  value:
+                    rows:
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: 327508
+                        domain_name: mapsbuddy.co
+                        widget_id: 674349
+                        widget_description: 1 Ad Push Widget
+                        device: d
+                        country: US
+                        source: optin_11112019_inactive
+                        campaign: '02012020'
+                        clicks: 1
+                        revenue: 0.22
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: 323772
+                        domain_name: easyformsfinder.com
+                        widget_id: 624950
+                        widget_description: Widget 58
+                        device: d
+                        country: US
+                        source: optin_01282020_missing
+                        campaign: '02012020'
+                        clicks: 1
+                        revenue: 0.09
+                Group By Aggregate:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group by Source:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 311504
+                        domain_name: mywordscribe.com
+                        widget_id: 573523
+                        widget_description: mywordscribe.com
+                        device: d
+                        country: US
+                        source: optin_10032019_active
+                        campaign: '02022020'
+                        clicks: 1
+                        revenue: 0
+                      - date: null
+                        domain_id: 323790
+                        domain_name: mapmyjourney.co
+                        widget_id: 625047
+                        widget_description: Widget 59
+                        device: d
+                        country: US
+                        source: optin_08182019_active
+                        campaign: '02012020'
+                        clicks: 1
+                        revenue: 0
+                Groub By Campaign:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group By Country:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group By Device:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group By Widget:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+                Group By Domain:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01302020_missing
+                        campaign: '02022020'
+                        clicks: 44
+                        revenue: 1.92
+                      - date: null
+                        domain_id: 332260
+                        domain_name: mapmyquest.co
+                        widget_id: 683871
+                        widget_description: Push-Notification-API
+                        device: d
+                        country: US
+                        source: optin_01292020_missing
+                        campaign: '02022020'
+                        clicks: 41
+                        revenue: 1.69
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Start Date After End Date:
+                  value:
+                    errors:
+                      - Start time cannot be after end time
+                Exceeds Date Range:
+                  value:
+                    errors:
+                      - Start time cannot be more than 31 days apart from end time
+                Future Date:
+                  value:
+                    errors:
+                      - End time cannot be in the future
+                Invalid groupTime value:
+                  value:
+                    errors:
+                      - 'groupTime must be set to one of the following: day, hour, aggregate'
       operationId: publisherClickReport
       description: |-
         ## Introduction
@@ -395,24 +810,6 @@ paths:
           name: Authorization
           required: true
           description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
-        - schema:
-            type: string
-            default: all
-            example: 'US,CA,UK'
-          in: query
-          name: countries
-          description: Return only performance of the specified countries. Expects a comma delimited list.
-        - schema:
-            type: string
-            default: all
-            enum:
-              - desktop
-              - mobile
-              - all
-            example: all
-          in: query
-          name: device
-          description: Return only preformance of the specified device type.
         - schema:
             type: string
             default: xml
@@ -556,6 +953,130 @@ paths:
                           type: integer
                         revenue:
                           type: number
+              examples:
+                Filter By Country:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: d
+                        country: US
+                        impressions: 404166
+                        ctr: 3.076
+                        ecpm: 2.2457
+                        clicks_paid: 12432
+                        clicks_internal: 0
+                        revenue: 907.64
+                      - date: null
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: m
+                        country: US
+                        impressions: 509
+                        ctr: 1.5717
+                        ecpm: 2.9194
+                        clicks_paid: 8
+                        clicks_internal: 0
+                        revenue: 1.49
+                      - date: null
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: t
+                        country: US
+                        impressions: 81
+                        ctr: 0
+                        ecpm: 0
+                        clicks_paid: 0
+                        clicks_internal: 0
+                        revenue: 0
+                Group By Aggregate:
+                  value:
+                    rows:
+                      - date: null
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: d
+                        country: US
+                        impressions: 404166
+                        ctr: 3.076
+                        ecpm: 2.2457
+                        clicks_paid: 12432
+                        clicks_internal: 0
+                        revenue: 907.64
+                      - date: null
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: m
+                        country: US
+                        impressions: 509
+                        ctr: 1.5717
+                        ecpm: 2.9194
+                        clicks_paid: 8
+                        clicks_internal: 0
+                        revenue: 1.49
+                Group By Day:
+                  value:
+                    rows:
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: d
+                        country: US
+                        impressions: 404166
+                        ctr: 3.076
+                        ecpm: 2.2457
+                        clicks_paid: 12432
+                        clicks_internal: 0
+                        revenue: 907.64
+                      - date: '2020-02-02T00:00:00-08:00'
+                        domain_id: null
+                        domain_name: null
+                        widget_id: null
+                        widget_guid: null
+                        widget_description: null
+                        device: m
+                        country: US
+                        impressions: 509
+                        ctr: 1.5717
+                        ecpm: 2.9194
+                        clicks_paid: 8
+                        clicks_internal: 0
+                        revenue: 1.49
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Device Type Invalid:
+                  value:
+                    errors:
+                      - 'device must be set to one of the following: desktop, mobile, tablet'
       operationId: deviceGeo
       description: |-
         Content.ad offers a REST API for a publisher to receive device and geo reporting data in either XML or JSON format. Please note that the report can only be run for a maximum period of 31 days.
