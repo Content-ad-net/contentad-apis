@@ -9,6 +9,9 @@ info:
     Please note that this feature requires a unique API key and API password. Please contact your account representative for more information.
 
     ## Implementation FAQ
+    ### What authentication method is required
+    Authentication is requried for each Report API call. Login to https://content.ad, and go to the "General Info" page. Find your API Key and set an API Password if you haven't already. Encode those using the Basic Auth method as shown in the "Security Schemes" section below, and pass the encoded value in the header of each API call.
+
     ### How often is performance data updated?
     Performance reports are updated by Content.ad once per hour.
 
@@ -1187,6 +1190,108 @@ paths:
           in: query
           name: groupTime
           description: 'Returns entries by hour, day or aggregate'
+  /advertiser:
+    get:
+      summary: /advertiser
+      tags:
+        - Advertiser Reporting
+      responses: {}
+      operationId: advertiser
+      description: |-
+        Content.ad offers this REST API to make the data in the Campaign Summary Report in an advertiser’s account login available in either XML or JSON format.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How is reporting data grouped?
+        This report has options for time groupings down to the hour and data sets down to the ad. See the “Optional Query String Parameters” section below for more information.
+      parameters:
+        - schema:
+            type: string
+            default: aggregate
+            example: aggregate
+            enum:
+              - ad
+              - campaign
+              - aggregate
+          in: query
+          name: groupBy
+          description: 'Returns entries by ad, campaign or aggregate'
+        - schema:
+            type: string
+            default: aggregate
+            enum:
+              - day
+              - hour
+              - aggregate
+            example: aggregate
+          in: query
+          name: groupTime
+          description: 'Returns entries by date, hour or aggregate.'
+        - schema:
+            type: string
+            default: xml
+            example: xml
+          in: query
+          name: output
+          description: Defines reponse format as either XML or JSON as specified.
+        - schema:
+            type: string
+            example: '2020-07-01T00:00:00-08:00'
+          in: query
+          name: startDate
+          description: 'Defines beginning of report date range. Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+        - schema:
+            type: string
+            example: '2020-07-01T00:00:00-08:00'
+          in: query
+          name: endDate
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
+          required: true
+  /advertiser/click:
+    get:
+      summary: /advertiser/click
+      tags:
+        - Advertiser Reporting
+      responses: {}
+      operationId: advertiserClick
+      description: |-
+        Content.ad offers this REST API to make detailed click data available to advertisers in either XML or JSON format.
+
+        Please note that this feature requires a unique API key and password. Please contact your account representative for more information.
+
+        ## Implementation FAQ
+        ### How is reporting data grouped?
+        Depending on your preferences, you can view the specific country, device type, and domain ID of each ad click in a given hour, day, or aggregate time period. See the “Optional Query String Parameters” section below for more information. Because of the granularity of this data, impressions are not available via this report.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          description: Encode your API Key and API Password using Basic Auth and include in this field with every call.
+          required: true
+          name: Authorization
+        - schema:
+            type: string
+            default: all
+            example: 'US,CA,UK'
+          in: query
+          name: countries
+          description: Return only performance of the specified countries.
+        - schema:
+            type: string
+            default: all
+            enum:
+              - mobile
+              - desktop
+            example: mobile
+          in: query
+          name: device
+          description: Return only performance of the specified device type.
 components:
   schemas: {}
   securitySchemes:
