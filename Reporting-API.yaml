@@ -1756,7 +1756,7 @@ paths:
           description: 'Return entries by hour, day or aggregate.'
         - schema:
             type: integer
-            example: '12345'
+            example: 462354
           in: query
           name: campaignId
           description: Return only clicks for the provided domain ID.
