@@ -107,7 +107,135 @@ paths:
           required: true
         - schema:
             type: integer
-            example: '1'
+            example: 1
+          in: query
+          name: blockIntl
+          description: 'When set to 1, the widget will not display for users outside of the United States and Canada.'
+        - schema:
+            type: integer
+            example: 1
+          in: query
+          name: blockMobile
+          description: 'When set to 1, the widget will not display for mobile users.'
+        - schema:
+            type: string
+          in: query
+          name: pre
+          description: Add this value to the beginning of all links in the rendered widget. This is useful for adding macros when serving the widget through a third party ad service such as Google DFP.
+        - schema:
+            type: string
+          in: query
+          name: internalTarget
+          description: 'If true, Sets the value of the "target" attribute on internal content links.'
+        - schema:
+            type: string
+          in: query
+          name: externalTarget
+          description: 'Sets the value of the "target" attribute on sponsored links.'
+        - schema:
+            type: number
+            default: 1
+            example: 0
+          in: query
+          name: exitPopExpireDays
+          description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
+  /GetWidget.aspx:
+    get:
+      summary: /GetWidget.aspx
+      tags:
+        - GetWidget
+      responses:
+        '200':
+          description: OK
+      operationId: GetWidget
+      description: 'The GetWidget endpoint will return either a JSON object containing ads, or a JavaScript file that can be included on your in-browser page to display your widget.'
+      parameters:
+        - schema:
+            type: string
+            example: 2c304fbb-b1a5-4800-ab3a-b02f2c562ba2
+          in: query
+          name: id
+          description: 'The unique identifier for your account (API Key). Default: none'
+          required: true
+        - schema:
+            type: string
+            example: ZXhhbXBsZS5jb250ZW50LmFk
+          in: query
+          name: d
+          description: |
+            The unique identifier for your domain. Default: none
+          required: true
+        - schema:
+            type: integer
+            example: 687719
+          in: query
+          name: wid
+          description: 'The unique identifier for your widget. Default: none'
+          required: true
+        - schema:
+            type: string
+            example: '1588800280815'
+          in: query
+          name: cb
+          description: The currrent time in milliseconds since the epoc. This number insures that your request is unique and will therefore recieve the latest version of the widget2 library.
+        - schema:
+            type: string
+          in: query
+          name: clientId
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_source' value is stored here automatilally if a clientId value is not passed in.
+            Note: The clientId must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: clientId2
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_campaign' value is stored here automatilally if a clientId2 value is not passed in.
+            Note: The clientId2 must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: pushId
+          description: "Your Publisher provided subscriber ID. The 'pushId' value is treated interchangably with the 'euid' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: euid
+          description: "Your Publisher provided subscriber ID. The 'euid' value is treated interchangably with the 'pushId' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: ipAddress
+          description: "End user's IP Address. This is not the IP of your server, but instead the IP of the person who will receive the ad. This value is automaticaly filled for in-browser installation code (HTML response) requests."
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: userAgent
+          description: 'The URL encoded user agent string. This is not the user agent of your server, but instead the user agent string of the person who will receive the ad. This value is automaticaly filled for installation code (HTML response) requests.'
+        - schema:
+            type: string
+            example: 'true'
+          in: query
+          name: debug
+          description: "If specified, the 'debug' and 'debugMode' parameters display reuest variables in the JSON and HTML responses, respecitively. Including this value in your request will return the debug data, reguardless of the value you assign to the parameter."
+        - schema:
+            type: string
+          in: query
+          name: exitPop
+          description: 'Required for Exit Intent widgets only. When set to true, the widget will only appear when the user is about to leave the page.'
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: exitPopMobile
+          description: 'Required for Mobile Exit Pop widgets only. When set to true, the widget will only appear when the user scrolls up or reaches the bottom of the page.'
+          required: true
+        - schema:
+            type: integer
+            example: 1
           in: query
           name: blockIntl
           description: 'When set to 1, the widget will not display for users outside of the United States and Canada.'
@@ -142,3 +270,6 @@ paths:
 components:
   schemas: {}
   securitySchemes: {}
+tags:
+  - name: widget2
+  - name: GetWidget
