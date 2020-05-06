@@ -55,8 +55,7 @@ paths:
             type: string
             format: date-time
             default: '2020-07-01T00:00:00-08:00'
-            example: '2020-07-01 OR  2020-07-01T00:00:00-08:00'
-            enum: []
+            example: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
           description: |-
@@ -914,7 +913,6 @@ paths:
           in: query
           name: groupTime
           description: 'Returns entries by hour, day or aggregate'
-      requestBody: {}
     parameters: []
   /publisher/device-geo:
     get:
@@ -957,9 +955,7 @@ paths:
                         ecpm:
                           type: number
                         clicks_paid:
-                          type:
-                            - string
-                            - integer
+                          type: integer
                         clicks_international:
                           type: integer
                         revenue:
@@ -1114,7 +1110,7 @@ paths:
           description: Return only performance of the specified countries. Expects a comma delimited list.
         - schema:
             type: string
-            default: moible
+            default: mobile
             enum:
               - desktop
               - mobile
