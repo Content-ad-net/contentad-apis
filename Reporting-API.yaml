@@ -63,13 +63,15 @@ paths:
             Defines beginning of report date range.
             Must be URL encoded. Default: yesterday, beginning of day, Pacific Time.
             Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
             format: date-time
             default: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time. Example: 2016-01-26T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
         - schema:
             type: string
             default: 'false'
@@ -427,7 +429,6 @@ paths:
           in: query
           name: output
           description: Defines response format as either XML or JSON as specified.
-          required: true
         - schema:
             type: string
             default: 'Basic '
@@ -442,8 +443,10 @@ paths:
             default: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
-          description: |
-            Defines beginning of report date range. Must be URL encoded. Example: 2020-07-01T00:00:00-08:00
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
             format: date-time
@@ -451,7 +454,8 @@ paths:
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Example: 2020-07-02T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
         - schema:
             type: string
             default: aggregate
@@ -826,14 +830,18 @@ paths:
             default: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
-          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the beginning of the day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
             default: '2020-07-02T00:00:00-08:00'
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the end of the day, Pacific Time. Example: 2020-07-02T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
         - schema:
             type: string
             format: ''
@@ -1130,14 +1138,18 @@ paths:
             default: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
-          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the beginning of the day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
             default: '2020-07-02T00:00:00-08:00'
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines beginning of report date range. Must be URL encoded. The default value is yesterday at the end of the day, Pacific Time. Example: 2020-07-02T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
         - schema:
             type: string
             format: ''
@@ -1195,7 +1207,60 @@ paths:
       summary: /advertiser
       tags:
         - Advertiser Reporting
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Campaign:
+                          type: object
+                          properties:
+                            ID:
+                              type: integer
+                            Name:
+                              type: string
+                        Ad:
+                          type: string
+                        Time:
+                          type: string
+                        Impressions:
+                          type: integer
+                        Clicks:
+                          type: integer
+                        CTR:
+                          type: number
+                        Conversions:
+                          type: integer
+                        Spend:
+                          type: number
+                        ECPC:
+                          type: number
+                        ECPA:
+                          type: number
+              examples:
+                JSON:
+                  value:
+                    Rows:
+                      - Campaign:
+                          ID: 0
+                          Name: null
+                        Ad: null
+                        Time: null
+                        Impressions: 31340345
+                        Clicks: 54875
+                        CTR: 0.1751
+                        Conversions: 0
+                        Spend: 1282.15
+                        ECPC: 0.0233
+                        ECPA: 1282.154
       operationId: advertiser
       description: |-
         Content.ad offers this REST API to make the data in the Campaign Summary Report in an advertiser’s account login available in either XML or JSON format.
@@ -1240,13 +1305,17 @@ paths:
             example: '2020-07-01T00:00:00-08:00'
           in: query
           name: startDate
-          description: 'Defines beginning of report date range. Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
             example: '2020-07-01T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time. Example: 2020-07-01T00:00:00-08:00'
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
         - schema:
             type: string
           in: header
@@ -1258,7 +1327,340 @@ paths:
       summary: /advertiser/click
       tags:
         - Advertiser Reporting
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                        campaign_id:
+                          type: integer
+                        campaign_name:
+                          type: string
+                        ad_id:
+                          type: integer
+                        device:
+                          type: string
+                        country:
+                          type: string
+                        domain_id:
+                          type: string
+                        clicks:
+                          type: integer
+                        spend:
+                          type: number
+                        excluded_clicks:
+                          type: integer
+                        conversions:
+                          type: integer
+                        ecpc:
+                          type: number
+                        ecpa:
+                          type: number
+              examples:
+                JSON:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 955
+                        spend: 46.82
+                        excluded_clicks: 172
+                        conversions: 0
+                        ecpc: 0.049
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 561
+                        spend: 9.1
+                        excluded_clicks: 106
+                        conversions: 0
+                        ecpc: 0.0162
+                        ecpa: 0
+                Group By Domain:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: 281811
+                        clicks: 120
+                        spend: 6
+                        excluded_clicks: 12
+                        conversions: 0
+                        ecpc: 0.05
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: 159212
+                        clicks: 112
+                        spend: 5.6
+                        excluded_clicks: 27
+                        conversions: 0
+                        ecpc: 0.05
+                        ecpa: 0
+                Group By Campaign:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 955
+                        spend: 46.82
+                        excluded_clicks: 172
+                        conversions: 0
+                        ecpc: 0.049
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 561
+                        spend: 9.1
+                        excluded_clicks: 106
+                        conversions: 0
+                        ecpc: 0.0162
+                        ecpa: 0
+                Group By Ad:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 955
+                        spend: 46.82
+                        excluded_clicks: 172
+                        conversions: 0
+                        ecpc: 0.049
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 561
+                        spend: 9.1
+                        excluded_clicks: 106
+                        conversions: 0
+                        ecpc: 0.0162
+                        ecpa: 0
+                Campaign ID:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: 2355079
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 409
+                        spend: 6.86
+                        excluded_clicks: 38
+                        conversions: 0
+                        ecpc: 0.0167
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: 2341044
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 152
+                        spend: 2.24
+                        excluded_clicks: 67
+                        conversions: 0
+                        ecpc: 0.0147
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: 2341053
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 0
+                        spend: 0
+                        excluded_clicks: 1
+                        conversions: 0
+                        ecpc: 0
+                        ecpa: 0
+                Group By Country:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 124790
+                        campaign_name: 303_Symptoms_Diabetes_Mobile_T1_CAD
+                        ad_id: null
+                        device: null
+                        country: CA
+                        domain_id: null
+                        clicks: 386
+                        spend: 7.92
+                        excluded_clicks: 23
+                        conversions: 0
+                        ecpc: 0.0205
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 125868
+                        campaign_name: 347_Sports_Photo_Mobile_T1_CAD
+                        ad_id: null
+                        device: null
+                        country: CA
+                        domain_id: null
+                        clicks: 311
+                        spend: 4.79
+                        excluded_clicks: 45
+                        conversions: 0
+                        ecpc: 0.0153
+                        ecpa: 0
+                Group By Device:
+                  value:
+                    rows:
+                      - date: null
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: d
+                        country: null
+                        domain_id: null
+                        clicks: 955
+                        spend: 46.82
+                        excluded_clicks: 158
+                        conversions: 0
+                        ecpc: 0.049
+                        ecpa: 0
+                      - date: null
+                        campaign_id: 124932
+                        campaign_name: 319_Foods_That_Kills_Mobile_T1_CAD
+                        ad_id: null
+                        device: m
+                        country: null
+                        domain_id: null
+                        clicks: 561
+                        spend: 9.1
+                        excluded_clicks: 60
+                        conversions: 0
+                        ecpc: 0.0162
+                        ecpa: 0
+                Group By Day:
+                  value:
+                    rows:
+                      - date: '2020-01-01T00:00:00-08:00'
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 356
+                        spend: 17.7
+                        excluded_clicks: 56
+                        conversions: 0
+                        ecpc: 0.0497
+                        ecpa: 0
+                      - date: '2020-01-01T00:00:00-08:00'
+                        campaign_id: 124849
+                        campaign_name: 306_Fruits_Fat_Burning_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 53
+                        spend: 2.95
+                        excluded_clicks: 10
+                        conversions: 0
+                        ecpc: 0.0556
+                        ecpa: 0
+                Group by Hour:
+                  value:
+                    rows:
+                      - date: '2020-01-01T00:00:00-08:00'
+                        campaign_id: 125865
+                        campaign_name: 345_Sports_Photo_Desktop_US_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 5
+                        spend: 0.25
+                        excluded_clicks: 3
+                        conversions: 0
+                        ecpc: 0.05
+                        ecpa: 0
+                      - date: '2020-01-01T00:00:00-08:00'
+                        campaign_id: 124791
+                        campaign_name: 304_Symptons_Diabetes_Mobile_UK_CAD
+                        ad_id: null
+                        device: null
+                        country: null
+                        domain_id: null
+                        clicks: 1
+                        spend: 0.06
+                        excluded_clicks: 0
+                        conversions: 0
+                        ecpc: 0.058
+                        ecpa: 0
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                Start Date After End Date:
+                  value:
+                    errors:
+                      - Start time cannot be after end time
+                Future End Time:
+                  value:
+                    errors:
+                      - End time cannot be in the future
       operationId: advertiserClick
       description: |-
         Content.ad offers this REST API to make detailed click data available to advertisers in either XML or JSON format.
@@ -1277,21 +1679,87 @@ paths:
           name: Authorization
         - schema:
             type: string
-            default: all
-            example: 'US,CA,UK'
+            example: '2020-07-01T00:00:00-08:00'
           in: query
-          name: countries
-          description: Return only performance of the specified countries.
+          name: startDate
+          description: |-
+            Defines beginning of report date range.
+            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+          required: true
         - schema:
             type: string
-            default: all
-            enum:
-              - mobile
-              - desktop
-            example: mobile
+            example: '2020-07-02T00:00:00-08:00'
           in: query
-          name: device
-          description: Return only performance of the specified device type.
+          name: endDate
+          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          required: true
+        - schema:
+            type: string
+            default: 'true'
+            example: 'true'
+            enum:
+              - 'true'
+              - 'false'
+          in: query
+          name: groupByCampaign
+          description: 'If true, return data seperated by campaign.'
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'false'
+              - 'true'
+            example: 'true'
+          in: query
+          name: groupByAd
+          description: 'If true, return data separated by ad.'
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'false'
+              - 'true'
+            example: 'true'
+          in: query
+          name: groupByCountry
+          description: 'If true, return data separated by device.'
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'false'
+              - 'true'
+            example: 'true'
+          in: query
+          name: groupByDevice
+          description: 'If true, return data separated by device.'
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'false'
+              - 'true'
+            example: 'true'
+          in: query
+          name: groupByDomain
+          description: 'If true, return data separated by domain.'
+        - schema:
+            type: string
+            default: aggregate
+            enum:
+              - hour
+              - day
+              - aggregate
+            example: day
+          in: query
+          name: groupTime
+          description: 'Return entries by hour, day or aggregate.'
+        - schema:
+            type: integer
+            example: '12345'
+          in: query
+          name: campaignId
+          description: Return only clicks for the provided domain ID.
 components:
   schemas: {}
   securitySchemes:
@@ -1304,4 +1772,6 @@ components:
       scheme: basic
 tags:
   - name: Publisher Reports
+    description: Content.ad offers this REST API to make reporting data available in either XML or JSON format.
+  - name: Advertiser Reporting
     description: Content.ad offers this REST API to make reporting data available in either XML or JSON format.
