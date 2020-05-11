@@ -13,10 +13,18 @@ info:
     Authentication is requried for each Report API call. Login to https://content.ad, and go to the "General Info" page. Find your API Key and set an API Password if you haven't already. Encode those using the Basic Auth method as shown in the "Security Schemes" section below, and pass the encoded value in the header of each API call.
 
     ### How often is performance data updated?
-    Performance reports are updated by Content.ad once per hour.
+    Performance reports are updated by Content.ad once per hour. Additional calls to the API for the same data will return cached information.
 
     ### How long can I run the report for?
     This report can be run for any period 31 days or less. You can use the "startDate" and "endDate" parameters to specify a date range.
+
+    ### How is reporting data grouped?
+    This report can group data by hour, day or aggregate the data over the entire time period. The default is aggregate. Additional groupings can be done by widget, source (clientID) and campaign (clientID2). See the "Query Parameters" section for more information.
+
+    ### How do I see Source & Campaign Information?
+    Content.ad automatically collects 'utm_source' and 'utm_campaign' information where it is available to our widget, for example from Google Analytics. When explicity passing source and campaign information to the widget, or widget API, these fields are commonly labled 'clientId' and 'clientId2', respectively.
+
+    This data is returned in the fields called 'source' and 'campaign' respectively. Certain reports such as the traffic-sources, click, and device-geo reports, allow for custom grouping by either 'source', 'campaign', or both with a parameter such as groupBySource.
   contact:
     name: Content.ad Support
     url: 'https://help.content.ad'
@@ -59,7 +67,7 @@ paths:
           in: query
           name: startDate
           description: |-
-            Defines beginning of report date range.
+            Defines beginning of report date range. Do not include time when grouping by day.
             Must be URL encoded. Default: yesterday, beginning of day, Pacific Time.
             Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
@@ -69,7 +77,7 @@ paths:
             default: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -443,7 +451,7 @@ paths:
           in: query
           name: startDate
           description: |-
-            Defines beginning of report date range.
+            Defines beginning of report date range. Do not include time when grouping by day or aggregate.
             Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
         - schema:
@@ -453,7 +461,7 @@ paths:
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -476,9 +484,6 @@ paths:
         ## Implementation FAQ
         ### How do I configure my sources and campaigns so that they appear in this report?
         See our FAQ on [setting up the Traffic Sources Report](https://help.content.ad/en/articles/1498868-how-can-i-view-reports-by-url-traffic-source-or-a-custom-dimension).
-
-        ### How is reporting data grouped?
-        This report can group data by hour, day or aggregate time period and groups performance by widget, source (clientID) and campaign (clientID2). See the "Query Parameters" section for more information.
   /publisher/click:
     get:
       summary: Publisher Click Report
@@ -831,7 +836,7 @@ paths:
           name: startDate
           description: |-
             Defines beginning of report date range.
-            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+            Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
         - schema:
             type: string
@@ -839,7 +844,7 @@ paths:
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -881,7 +886,7 @@ paths:
             example: 'true'
           in: query
           name: groupByDevice
-          description: 'If true, return data separated by device.'
+          description: 'If true, return data separated by device. Responses: d = desktop, m = mobile'
         - schema:
             type: string
             default: 'true'
@@ -1117,7 +1122,7 @@ paths:
             example: mobile
           in: query
           name: device
-          description: Return only preformance of the specified device type.
+          description: 'Return only preformance of the specified device type. Responses: d = desktop, m = mobile'
         - schema:
             type: string
             default: xml
@@ -1136,7 +1141,7 @@ paths:
           name: startDate
           description: |-
             Defines beginning of report date range.
-            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+            Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
         - schema:
             type: string
@@ -1144,7 +1149,7 @@ paths:
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -1186,7 +1191,7 @@ paths:
             example: 'true'
           in: query
           name: groupByDevice
-          description: 'If true, return data separated by device.'
+          description: 'If true, return data separated by device. Responses: d = desktop, m = mobile'
         - schema:
             type: string
             default: aggregate
@@ -1200,7 +1205,7 @@ paths:
           description: 'Returns entries by hour, day or aggregate'
   /advertiser:
     get:
-      summary: /advertiser
+      summary: Advertiser Report
       tags:
         - Advertiser Reporting
       responses:
@@ -1303,14 +1308,14 @@ paths:
           name: startDate
           description: |-
             Defines beginning of report date range.
-            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+            Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
         - schema:
             type: string
             example: '2020-07-01T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -1320,7 +1325,7 @@ paths:
           required: true
   /advertiser/click:
     get:
-      summary: /advertiser/click
+      summary: Advertiser Click Report
       tags:
         - Advertiser Reporting
       responses:
@@ -1680,14 +1685,14 @@ paths:
           name: startDate
           description: |-
             Defines beginning of report date range.
-            Must be URL encoded. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
+            Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, beginning of day, Pacific Time. Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]
           required: true
         - schema:
             type: string
             example: '2020-07-02T00:00:00-08:00'
           in: query
           name: endDate
-          description: 'Defines end of report date range. Must be URL encoded. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
+          description: 'Defines end of report date range. Must be URL encoded. Do not include time when grouping by day or aggregate. Default: yesterday, end of day, Pacific Time.  Examples: Group by Time [2016-01-25T00:00:00-08:00], Group by Date [2016-01-25]'
           required: true
         - schema:
             type: string
@@ -1728,7 +1733,7 @@ paths:
             example: 'true'
           in: query
           name: groupByDevice
-          description: 'If true, return data separated by device.'
+          description: 'If true, return data separated by device. Responses: d = desktop, m = mobile'
         - schema:
             type: string
             default: 'false'
