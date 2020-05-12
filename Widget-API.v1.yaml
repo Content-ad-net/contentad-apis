@@ -290,7 +290,7 @@ paths:
             example: 'false'
           in: query
           name: served
-          description: ''
+          description: "If true, records an impression for the widget. Value is automaticlay set to 'true' for installation code (HTML resonse) requests. If the request is for an auction, then the publisher must send a request with 'served=false', followed by a call to the user endpoint with 'served=true' to notify us that the bid was successful, and the ad was served. Default: true"
         - schema:
             type: string
             default: 'false'
@@ -314,7 +314,7 @@ paths:
           description: Impression Key value. Expects UUID format
   /widget/impression/served:
     post:
-      summary: /widget/impression/served
+      summary: User Endpoint
       tags:
         - User Endpoint
       responses:
@@ -325,7 +325,7 @@ paths:
       parameters:
         - schema:
             type: string
-            default: 'false'
+            default: 'true'
             enum:
               - 'true'
               - 'false'
