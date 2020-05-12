@@ -353,6 +353,16 @@ paths:
           name: haid
           description: Impression Key value. Look in the `impression_served_url` in the GetWidget JSON response object for the `haid` value.
           required: true
+  /px.gif:
+    get:
+      summary: In-Browser Conversion Pixel
+      tags:
+        - Conversion Pixel
+      responses:
+        '200':
+          description: OK
+      operationId: px.gif
+      description: ''
 components:
   schemas: {}
   securitySchemes: {}

@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: Conversion Tracker
+  version: '1.0'
+  contact:
+    name: Content.ad Support
+    url: 'https://help.content.ad'
+    email: support@content.ad
+  description: |-
+    ## FAQs
+    ### Where do I find my conversion pixel?
+    The Content.ad conversion pixel is not available by default to all accounts be default. To see if you already have a conversion pixel; login to content.ad and click the "General Info" link in the menu, at the bottom of the page you should see a link to your Conversion Pixel. If you do not see a Conversion Pixel link, then contact your Account Manager to request a pixel.
+
+    ### When do I fire my conversion pixel?
+    Place your pixel only when a conversion has occured on your landing page. If you are converting on purchase, then place the pixel on the shopping cart payment confirmation page. If you are converting after a certain number of page views, place the pixel only on the final page. If you place the conversion pixel when a conversion has not occured, your conversion data will be inacurate. If you fire your pixel with each page load, or in some other way inconsistent with true conversions, then your pixel may be deactivated.
+
+    ### What type of conversion pixels are available?
+    You will receive only 1 conversion pixel, which will work accross all of your campaigns. However, you can fire the pixel using 3 methods: JavaScript, image tag, or server to server API call.
+
+    ### When do I use the JavaScript pixel?
+    Use this pixel when the conversion occurs within a web page in a web browser on the client side. This script should not be used on the server side.
+
+    ### When do I use an image pixel?
+    Use the image pixel only in the case your page cannot use the JavaScript pixel. The JavaScript pixel is preferred as it allows the greatest flexibility in your implementation. This script should not be used on the server side.
+
+    ### When do I use the server to server pixel?
+    Only use the server to server pixel if your conversion pixel will be sent from your servers.
+    Add the `[uid]` (user ID) macro to all of your ads in a parameter you can track. Example: `param1=[uid]`
+
+    When your ad is clicked, the macro will be replaced with a user ID, which will be a long string of letters and numbers. Your site will need to track this user ID to track the conversion.
+
+    When the conversion pixel is fired from the server, your pixel will need to include a new parameter called `user` and pass the user ID. It is very important that this is done to track conversions.
+servers:
+  - url: px.content-ad.net
+    description: Conversion Tracker
+paths:
+  /widget/conversion:
+    get:
+      summary: Conversion Pixel
+      tags:
+        - Conversion Pixel
+      responses:
+        '200':
+          description: OK
+      operationId: conversionPixel
+      description: |-
+        (See overview)
+
+        ### JavaScript example
+        ```
+        <script type="text/javascript">
+            (function(d) {
+                var params =
+                {
+                    aid: "23cd1d0b-89ef-42f9-94a6-8e4b8683e504",
+                    cb: (new Date()).getTime()
+                };
+                var qs = Object.keys(params).reduce(function(a, k){ a.push(k + '=' + encodeURIComponent(params[k])); return a},[]).join(String.fromCharCode(38));
+                var i = d.createElement('iframe');
+                i.style='width:1px;height:1px;display:none;';
+                var p = 'https:' === d.location.protocol ? 'https' : 'http';
+                i.src = p + '://px.content-ad.net/widget/conversion?' + qs;
+                d.body.appendChild(i);
+            })(document);
+        </script>
+        ```
+
+        ### Image example
+        ```
+        <img src="https://px.content-ad.net/widget/conversion.png?aid=23cd1d0b-89ef-42f9-94a6-8e4b8683e504" height="1" width="1" />
+        ```
+
+        ### Server to Server example call
+        ```
+        https://px.content-ad.net/widget/conversion?aid=23cd1d0b-89ef-42f9-94a6-8e4b8683e504&user=[uid]
+        ```
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: aid
+          required: true
+          description: "The Ad ID for the ad that was clicked. You'll find this value in the click URL that leads the end user to your landing page. Expect: UUID format"
+        - schema:
+            type: string
+          in: query
+          name: user
+          description: 'Add the `[uid]` (user ID) macro to all of your ads in a parameter you can track. Then retrieve that same parameter that you set from the URL that loads your landing page. Example: `param1=[uid]` Expect: UUID format'
+components:
+  schemas: {}
+tags:
+  - name: Conversion Pixel
