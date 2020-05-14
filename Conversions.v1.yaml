@@ -47,7 +47,7 @@ paths:
         (See overview)
 
         ### JavaScript example
-        ```
+        ```html
         <script type="text/javascript">
             (function(d) {
                 var params =
@@ -66,12 +66,12 @@ paths:
         ```
 
         ### Image example
-        ```
+        ```html
         <img src="https://px.content-ad.net/widget/conversion.png?aid=23cd1d0b-89ef-42f9-94a6-8e4b8683e504" height="1" width="1" />
         ```
 
         ### Server to Server example call
-        ```
+        ```bash
         https://px.content-ad.net/widget/conversion?aid=23cd1d0b-89ef-42f9-94a6-8e4b8683e504&user=[uid]
         ```
       parameters:

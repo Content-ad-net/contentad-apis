@@ -1,0 +1,758 @@
+openapi: 3.0.0
+info:
+  title: Ads Serving API
+  version: '1.0'
+  description: Private CPC Feed API for approved publishers of Content.Ad
+  contact:
+    name: Content.Ad Technical Support
+    url: help.content.ad
+    email: support@content.ad
+servers:
+  - url: 'https://rest.content.ad'
+    description: Rest API Cluster
+  - description: Ads API
+    url: 'http://api.content.ad'
+paths:
+  /feeds/ad:
+    get:
+      summary: Get CPC Feed List (if enabled)
+      responses:
+        '200':
+          description: 'OK: Response produces json or xml array of eligible ads valid for 15 minutes for this domain / widgetid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CPC-Feed-Model'
+              examples:
+                PI Example:
+                  value:
+                    Count: 9
+                    Ads:
+                      - ID: 1881531
+                        CampaignID: '77269'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1881531&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D1881531'
+                        LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=1881531'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '20'
+                        Targeting: us
+                        CpcDesktop: 0.0568
+                        CpcMobile: 0.0568
+                        CpcTablet: 0.0568
+                        PerformanceScore: 7.0766
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                        Variations:
+                          - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                            Weight: 100
+                      - ID: 1949178
+                        CampaignID: '83442'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1949178&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Frichpeopleca-mob%2F%3Futm_widget_id%3D327136%26utm_content_id%3D1949178'
+                        LandingPage: 'http://cclick.org/richpeopleca-mob/?utm_widget_id=327136&utm_content_id=1949178'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0624
+                        CpcMobile: 0.0624
+                        CpcTablet: 0
+                        PerformanceScore: 12.6625
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                        Variations:
+                          - Title: 'Rich People in [CITY] Do Everything to Ban This "Video"'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/150x150/d646853a858e5cd3df9eb79cf117f7b8.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/300x250/d646853a858e5cd3df9eb79cf117f7b8.jpg'
+                            Weight: 100
+                      - ID: 2095975
+                        CampaignID: '77269'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2095975&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D2095975'
+                        LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=2095975'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0568
+                        CpcMobile: 0.0568
+                        CpcTablet: 0.0568
+                        PerformanceScore: 8.9822
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                          - Clickbait
+                          - Harsh/Racy Language
+                        Variations:
+                          - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/f5e355864e094a82f8a78c10fb8f11ab.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/f5e355864e094a82f8a78c10fb8f11ab.jpg'
+                            Weight: 100
+                      - ID: 2144099
+                        CampaignID: '106316'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2144099&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Farticles.comparisons.org%2Fwhy-did-no-one-tell-drivers-with-no-tickets-in-3-years-about-this-new-rule.php%3Faff%3D1411%26sub%3DAuto_106316%26pub%3D327136%26xcode%3D%5Buid%5D'
+                        LandingPage: 'http://articles.comparisons.org/why-did-no-one-tell-drivers-with-no-tickets-in-3-years-about-this-new-rule.php?aff=1411&sub=Auto_106316&pub=327136&xcode=[uid]'
+                        SponsoredBy: articles.comparisons.org
+                        ContentType: advertisement
+                        ContentRating: '20'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0
+                        CpcMobile: 0.036
+                        CpcTablet: 0
+                        PerformanceScore: 50
+                        Summary: null
+                        Tags:
+                          - Automotive
+                          - Affiliate
+                          - Auto Insurance
+                          - Clickbait
+                        Variations:
+                          - Title: 'New Rule in [CITY],[STATE]  (Drivers Are Furious)'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/106316/150x150/01b85d9e61d7d2b94618bc6145c9065a.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/106316/300x250/01b85d9e61d7d2b94618bc6145c9065a.jpg'
+                            Weight: 100
+                      - ID: 2155572
+                        CampaignID: '77269'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155572&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D2155572'
+                        LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=2155572'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0568
+                        CpcMobile: 0.0568
+                        CpcTablet: 0.0568
+                        PerformanceScore: 9.3528
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                          - Clickbait
+                          - Harsh/Racy Language
+                        Variations:
+                          - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/f61dae57272c8358bcdd795326757270.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/f61dae57272c8358bcdd795326757270.jpg'
+                            Weight: 100
+                      - ID: 2155578
+                        CampaignID: '82804'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155578&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Forionbizustablet%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155578'
+                        LandingPage: 'http://cclick.org/orionbizustablet/?utm_widget_id=327136&utm_content_id=2155578'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0576
+                        CpcMobile: 0.0576
+                        CpcTablet: 0
+                        PerformanceScore: 13.4899
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                          - Clickbait
+                        Variations:
+                          - Title: "[City] Men: Don't Watch This Video Around Your Wife"
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82804/150x150/f61dae57272c8358bcdd795326757270.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82804/300x250/f61dae57272c8358bcdd795326757270.jpg'
+                            Weight: 100
+                      - ID: 2155585
+                        CampaignID: '82810'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155585&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Forionbizaumobile%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155585'
+                        LandingPage: 'http://cclick.org/orionbizaumobile/?utm_widget_id=327136&utm_content_id=2155585'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0504
+                        CpcMobile: 0.0504
+                        CpcTablet: 0
+                        PerformanceScore: 11.2946
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                        Variations:
+                          - Title: "[City] Men: Don't Watch This Video Around Your Wife"
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82810/150x150/6944e7c5417aa588592fdbcb630537bb.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82810/300x250/6944e7c5417aa588592fdbcb630537bb.jpg'
+                            Weight: 100
+                      - ID: 2155588
+                        CampaignID: '83442'
+                        ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155588&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Frichpeopleca-mob%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155588'
+                        LandingPage: 'http://cclick.org/richpeopleca-mob/?utm_widget_id=327136&utm_content_id=2155588'
+                        SponsoredBy: The Orion Code
+                        ContentType: advertorial
+                        ContentRating: '30'
+                        AggressivenessRating: '10'
+                        Targeting: us
+                        CpcDesktop: 0.0624
+                        CpcMobile: 0.0624
+                        CpcTablet: 0
+                        PerformanceScore: 12.4387
+                        Summary: null
+                        Tags:
+                          - Get Rich Quick
+                          - Non-IAB
+                          - Personal Finance
+                          - Affiliate
+                          - Eye Candy - to Archive
+                          - Eye Candy
+                          - Personal Investing
+                          - Clickbait
+                        Variations:
+                          - Title: 'Rich People in [CITY] Do Everything to Ban This "Video"'
+                            SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/150x150/63b43fa5f86b5401ca446d016761680e.jpg'
+                            LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/300x250/63b43fa5f86b5401ca446d016761680e.jpg'
+                            Weight: 100
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '204':
+          description: No Eligible Ads Available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CPC-Feed-Model'
+              examples:
+                example:
+                  value:
+                    Count: 0
+                    Ads: []
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                    format: int32
+                x-tags:
+                  - ErrorModel
+                  - Ads APIs
+                type: object
+                title: ErrorModel
+                required:
+                  - code
+                  - message
+                x-examples:
+                  404 example:
+                    message: No matching file or record
+                    code: 404
+                  429 example:
+                    message: Rate Limit Exceeded. Try Again Later
+                    code: 429
+                  410 example:
+                    message: domain or widget ineligible or inactive
+                    code: 410
+                description: ''
+              examples:
+                example:
+                  value:
+                    message: Authorization Failure
+                    code: 401
+        '404':
+          description: 'Not Found - Domain ID, Widget ID or other parameters not valid or active'
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1feeds~1ad/get/responses/401/content/application~1json/schema'
+              examples:
+                example:
+                  value:
+                    message: No active matching record
+                    code: 404
+        '429':
+          description: 'Too Many Requests - Data is refreshed every 15 minutes - Due to large potential result sets, please limit to 20 requests per miunute (if using larger server clusters).'
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1feeds~1ad/get/responses/401/content/application~1json/schema'
+              examples:
+                example:
+                  value:
+                    message: Maximum Rate Limit Exceeded
+                    code: 429
+        '':
+          description: ''
+      tags:
+        - Ads APIs
+      parameters:
+        - schema:
+            type: integer
+            example: 327136
+          in: query
+          name: domainID
+          required: true
+          description: your content.ad domain id
+        - schema:
+            type: string
+            enum:
+              - json
+              - xml
+            example: json
+            default: json
+          in: query
+          name: output
+          required: true
+          description: json or xml supported output formats
+        - schema:
+            type: integer
+            enum:
+              - 1
+              - 0
+            example: 1
+            default: 1
+          in: query
+          name: ssl
+          description: Encode click through URLS with https(1) or http (0)
+        - schema:
+            type: string
+            example: 901dd8c5-e519-423e-8743-6b1a56dfac2f
+          in: query
+          name: widgetId
+          description: content.ad widget guid (optional)
+        - schema:
+            type: string
+            example: Basic YWJjNjg0NjgtYzk1MS00MzZhLWFkNjYtM2FlNDk2YmEyNWI5OnM/RGZrd1Y/bV4pOjlaMQ==
+          in: header
+          name: Authorization
+          description: Basic Auth
+          required: true
+        - schema:
+            type: string
+            example: application/json
+            default: application/json
+          in: header
+          name: Content-Type
+          required: true
+          description: Content-Type
+      description: 'Private API for publishing partners who have CPC feed rights and functionality enabled. Provides 15 minute refresh data feed of all eligible ads for that widget & domain'
+      operationId: get-feeds-ad
+    parameters: []
+components:
+  schemas:
+    CPC-Feed-Model:
+      title: CPC-Feed-Model
+      type: object
+      x-tags:
+        - Ads APIs
+        - Ad
+      x-examples:
+        PI Example:
+          Ads:
+            - ID: 1881531
+              CampaignID: '77269'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1881531&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D1881531'
+              LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=1881531'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '20'
+              Targeting: us
+              CpcDesktop: 0.0568
+              CpcMobile: 0.0568
+              CpcTablet: 0.0568
+              PerformanceScore: 7.0766
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+              Variations:
+                - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                  Weight: 100
+            - ID: 1949178
+              CampaignID: '83442'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1949178&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Frichpeopleca-mob%2F%3Futm_widget_id%3D327136%26utm_content_id%3D1949178'
+              LandingPage: 'http://cclick.org/richpeopleca-mob/?utm_widget_id=327136&utm_content_id=1949178'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0624
+              CpcMobile: 0.0624
+              CpcTablet: 0
+              PerformanceScore: 12.6625
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+              Variations:
+                - Title: 'Rich People in [CITY] Do Everything to Ban This "Video"'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/150x150/d646853a858e5cd3df9eb79cf117f7b8.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/300x250/d646853a858e5cd3df9eb79cf117f7b8.jpg'
+                  Weight: 100
+            - ID: 2095975
+              CampaignID: '77269'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2095975&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D2095975'
+              LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=2095975'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0568
+              CpcMobile: 0.0568
+              CpcTablet: 0.0568
+              PerformanceScore: 8.9822
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+                - Clickbait
+                - Harsh/Racy Language
+              Variations:
+                - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/f5e355864e094a82f8a78c10fb8f11ab.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/f5e355864e094a82f8a78c10fb8f11ab.jpg'
+                  Weight: 100
+            - ID: 2144099
+              CampaignID: '106316'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2144099&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Farticles.comparisons.org%2Fwhy-did-no-one-tell-drivers-with-no-tickets-in-3-years-about-this-new-rule.php%3Faff%3D1411%26sub%3DAuto_106316%26pub%3D327136%26xcode%3D%5Buid%5D'
+              LandingPage: 'http://articles.comparisons.org/why-did-no-one-tell-drivers-with-no-tickets-in-3-years-about-this-new-rule.php?aff=1411&sub=Auto_106316&pub=327136&xcode=[uid]'
+              SponsoredBy: articles.comparisons.org
+              ContentType: advertisement
+              ContentRating: '20'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0
+              CpcMobile: 0.036
+              CpcTablet: 0
+              PerformanceScore: 50
+              Summary: null
+              Tags:
+                - Automotive
+                - Affiliate
+                - Auto Insurance
+                - Clickbait
+              Variations:
+                - Title: 'New Rule in [CITY],[STATE]  (Drivers Are Furious)'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/106316/150x150/01b85d9e61d7d2b94618bc6145c9065a.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/106316/300x250/01b85d9e61d7d2b94618bc6145c9065a.jpg'
+                  Weight: 100
+            - ID: 2155572
+              CampaignID: '77269'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155572&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D2155572'
+              LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=2155572'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0568
+              CpcMobile: 0.0568
+              CpcTablet: 0.0568
+              PerformanceScore: 9.3528
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+                - Clickbait
+                - Harsh/Racy Language
+              Variations:
+                - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/f61dae57272c8358bcdd795326757270.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/f61dae57272c8358bcdd795326757270.jpg'
+                  Weight: 100
+            - ID: 2155578
+              CampaignID: '82804'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155578&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Forionbizustablet%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155578'
+              LandingPage: 'http://cclick.org/orionbizustablet/?utm_widget_id=327136&utm_content_id=2155578'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0576
+              CpcMobile: 0.0576
+              CpcTablet: 0
+              PerformanceScore: 13.4899
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+                - Clickbait
+              Variations:
+                - Title: "[City] Men: Don't Watch This Video Around Your Wife"
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82804/150x150/f61dae57272c8358bcdd795326757270.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82804/300x250/f61dae57272c8358bcdd795326757270.jpg'
+                  Weight: 100
+            - ID: 2155585
+              CampaignID: '82810'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155585&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Forionbizaumobile%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155585'
+              LandingPage: 'http://cclick.org/orionbizaumobile/?utm_widget_id=327136&utm_content_id=2155585'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0504
+              CpcMobile: 0.0504
+              CpcTablet: 0
+              PerformanceScore: 11.2946
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+              Variations:
+                - Title: "[City] Men: Don't Watch This Video Around Your Wife"
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82810/150x150/6944e7c5417aa588592fdbcb630537bb.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/82810/300x250/6944e7c5417aa588592fdbcb630537bb.jpg'
+                  Weight: 100
+            - ID: 2155588
+              CampaignID: '83442'
+              ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=2155588&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Frichpeopleca-mob%2F%3Futm_widget_id%3D327136%26utm_content_id%3D2155588'
+              LandingPage: 'http://cclick.org/richpeopleca-mob/?utm_widget_id=327136&utm_content_id=2155588'
+              SponsoredBy: The Orion Code
+              ContentType: advertorial
+              ContentRating: '30'
+              AggressivenessRating: '10'
+              Targeting: us
+              CpcDesktop: 0.0624
+              CpcMobile: 0.0624
+              CpcTablet: 0
+              PerformanceScore: 12.4387
+              Summary: null
+              Tags:
+                - Get Rich Quick
+                - Non-IAB
+                - Personal Finance
+                - Affiliate
+                - Eye Candy - to Archive
+                - Eye Candy
+                - Personal Investing
+                - Clickbait
+              Variations:
+                - Title: 'Rich People in [CITY] Do Everything to Ban This "Video"'
+                  SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/150x150/63b43fa5f86b5401ca446d016761680e.jpg'
+                  LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/83442/300x250/63b43fa5f86b5401ca446d016761680e.jpg'
+                  Weight: 100
+          Count: 9
+      properties:
+        Ads:
+          type: array
+          items:
+            title: Ads Model for CPC
+            type: object
+            x-tags:
+              - Ads APIs
+              - Ad
+            properties:
+              ID:
+                type: integer
+                example: 1881531
+              CampaignID:
+                type: string
+                example: '77269'
+              LandingPage:
+                type: string
+                format: uri
+                example: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=1881531'
+              ClickUrl:
+                type: string
+                format: uri
+                example: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1881531&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D1881531'
+              Variations:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Title:
+                      type: string
+                      example: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                    SmallImage:
+                      type: string
+                      format: uri
+                      example: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                    LargeImage:
+                      type: string
+                      format: uri
+                      example: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                    Weight:
+                      type: integer
+                      example: 100
+                  required:
+                    - Title
+                    - SmallImage
+                    - LargeImage
+              Tags:
+                type: array
+                example:
+                  - Personal Finance
+                  - Affiliate
+                  - Eye Candy
+                  - Personal Investing
+                uniqueItems: true
+                items:
+                  type: string
+              Summary:
+                type: string
+              PerformanceScore:
+                type: number
+                format: float
+                example: 7.0766
+              CpcMobile:
+                type: number
+                default: 0.0568
+                format: double
+                example: 0.0568
+              CpcDesktop:
+                type: number
+                default: 0.1
+                format: double
+                example: 0.0568
+                exclusiveMinimum: false
+                exclusiveMaximum: false
+              Targeting:
+                type: string
+                default: us
+                example: us
+              ContentRating:
+                type: integer
+                default: 30
+                example: 30
+              ContentType:
+                type: string
+                example: advertisement
+              SponsoredBy:
+                type: string
+                default: Content.Ad
+                example: The Orion Code
+            required:
+              - ID
+              - CampaignID
+              - ClickUrl
+              - LandingPage
+              - SponsoredBy
+              - ContentRating
+              - CpcDesktop
+              - CpcMobile
+            x-examples:
+              Ad Example:
+                ID: 1881531
+                CampaignID: '77269'
+                ClickUrl: 'https://api.content-ad.net/Lib/TrackOutboundClick.aspx?hid=0&guid=[wid]&uid=1881531&did=327136&type=3&pid=0&ti=bjkinit&it=2020-04-23+00%3A00%3A00&ct=feed&redirectUrl=http%3A%2F%2Fcclick.org%2Fmillgeodca%2Fgo.php%3Futm_widget_id%3D327136%26utm_content_id%3D1881531'
+                LandingPage: 'http://cclick.org/millgeodca/go.php?utm_widget_id=327136&utm_content_id=1881531'
+                SponsoredBy: The Orion Code
+                ContentType: advertorial
+                ContentRating: '30'
+                AggressivenessRating: '20'
+                Targeting: us
+                CpcDesktop: 0.0568
+                CpcMobile: 0.0568
+                CpcTablet: 0.0568
+                PerformanceScore: 7.0766
+                Summary: null
+                Tags:
+                  - Get Rich Quick
+                  - Non-IAB
+                  - Personal Finance
+                  - Affiliate
+                  - Eye Candy - to Archive
+                  - Eye Candy
+                  - Personal Investing
+                Variations:
+                  - Title: '[City] Millionaire Reveals Her Dirty $4,128.17/Day Secret'
+                    SmallImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/150x150/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                    LargeImage: 'https://d3dytsf4vrjn5x.cloudfront.net/77269/300x250/d27d3db2da5c6b3f8d69f980be181936.jpg'
+                    Weight: 100
+        Count:
+          type: number
+      required:
+        - Count
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: basic
+      description: This API uses http Basic Auth with a private username and API Key
+security:
+  - Authorization: []
+Tags:
+  - name: Get Rich Quick
+  - name: Non-IAB
+  - name: Personal Finance
+  - name: Affiliate
+  - name: Eye Candy - to Archive
+  - name: Eye Candy
+  - name: Personal Investing

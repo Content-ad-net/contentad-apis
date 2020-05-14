@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: Image Bridge
+  version: '1.0'
+  contact:
+    email: support@content.ad
+    url: 'https://help.content.ad'
+    name: Content.ad Support
+  description: |
+    # Image bridge
+
+    Stores ad images in S3.
+
+    ### From URL
+
+    ```http
+    POST https://image-bridge.content-ad.net
+    Content-Type: application/json
+    {
+      "affiliate_id": 12345,
+      "campaign_id": 123,
+      "image_url": "https://www.clipartkey.com/mpngs/m/9-97092_clip-art-fart-png-and-psd-unicorn-farting.png"
+    }
+    ```
+
+    ```http
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+      "affiliate_id": 12345,
+      "campaign_id": 123,
+      "image_url": "https://www.clipartkey.com/mpngs/m/9-97092_clip-art-fart-png-and-psd-unicorn-farting.png",
+      "image_s3" : "123/originals/images/f6586c2e-7d93-11ea-9445-0242ac110002.png",
+      "image_filename": "f6586c2e-7d93-11ea-9445-0242ac110002.png"
+    }
+    ```
+
+    #### Internals
+
+    Image bridge downloads the image from `image_url` and stores it in `s3://contentad-3`. The file type is detected instead of relying on an extension in the url.
+
+    `image-bridge-dev.content-ad.net` and `image-bridge-staging.content-ad.net` are also available.
+
+    ### Upload using multi part form data
+
+    Images can be uploaded without or with base64 encoding.
+
+    ```bash
+    curl -X POST -F 'affiliate_id=myaffiliate' -F 'campaign_id=mycampaign' -F 'image=@<filePath>' https://image-bridge.content-ad.net
+    ```
+
+    ```bash
+    curl -X POST -F 'affiliate_id=myaffiliate' -F 'campaign_id=mycampaign' -F 'image=@<filePath>;encoder=base64' https://image-bridge.content-ad.net
+    ```
+
+    ### Upload via S3
+
+    Uploading images via S3 is a 3 step procedure:
+
+    1. Get a signed url
+
+    ```http
+    GET https://image-bridge.content-ad.net
+    ```
+
+    ```http
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    {
+        "url": "https://contentad-3-temporary.s3.us-west-2.amazonaws.com/a4a041c2-52d6-4726-a0a5-7ddda3321b33?..."
+    }
+    ```
+
+    2. Put image to the return url
+
+    ```bash
+    curl -k -X PUT -T <filePath> <url>
+    ```
+
+    3. Store image from url as above passing in the signed url.
+
+    #### Internals
+
+    In step 2 the image is temporarily stored in `s3://contentad-3-temporary`
+
+    ## CI/CD
+
+    _stage_: one of development, staging, or production
+
+    ```
+    $ CAD_STAGE=<stage> yarn cicd
+    ```
+servers:
+  - url: 'https://image-bridge.content-ad.net'
+paths:
+  /:
+    post:
+      summary: Post Image
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  affiliate_id:
+                    type: integer
+                  campaign_id:
+                    type: integer
+                  domain_id:
+                    type: integer
+                  image_url:
+                    type: string
+                  image_s3:
+                    type: string
+                  image_filename:
+                    type: string
+                required:
+                  - affiliate_id
+                  - image_url
+                  - image_s3
+                  - image_filename
+              examples:
+                Type 1 Image Upload:
+                  value:
+                    affiliate_id: 12345
+                    domain_id: 12345
+                    image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+                    image_s3: type1/12345/original/images/88eabe2c-75e8-4f95-b86e-53616daea64d.jpg
+                    image_filename: 88eabe2c-75e8-4f95-b86e-53616daea64d.jpg
+                Type 3 Image Upload:
+                  value:
+                    affiliate_id: 12345
+                    campaign_id: 12345
+                    image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+                    image_s3: 12345/original/images/3264e60e-89ac-4931-ae18-092df94609df.jpg
+                    image_filename: 3264e60e-89ac-4931-ae18-092df94609df.jpg
+                Logo Image Upload:
+                  value:
+                    affiliate_id: 12345
+                    campaign_id: 12345
+                    image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+                    image_s3: 12345/logos/48e02c77-acff-4c75-842d-41f21cde3e26.jpg
+                    image_filename: 48e02c77-acff-4c75-842d-41f21cde3e26.jpg
+      operationId: postImage
+      description: "## Type 1 Ad images\nPass in the`affiliate_id`, `campaign_id`, and `image_url` params to upload a Type 3 Ad image. You can optionaly pass in `\"type\": 3`, but this is not required.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"campaign_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\"\n}\n```\n\n## Type 3 Ad images\nPass in the `affiliate_id`, `domain_id`, `image_url`, and `\"type\": 1` params to upload a Type 1 Ad image.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": 1\n}\n```\n\n## Logo images\nPass in the `affiliate_id`, `campaign_id`, `image_url`, and `\"type\": \"logo\"` params to upload a Type 3 Ad logo.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": \"logo\"\n}\n```"
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: affiliate_id
+          description: The Content.ad Advertiser ID.
+          required: true
+        - schema:
+            type: integer
+          in: query
+          name: campaign_id
+          description: The Content.ad Campaign ID that the new Ad will be related to. Required for Type 3 ad images.
+        - schema:
+            type: integer
+          in: query
+          name: domain_id
+          description: The Content.ad Domain ID that the new Ad will be related to. Required for Type 1 ad images.
+        - schema:
+            type: string
+            default: ''
+            enum: []
+            example: ''
+          in: query
+          name: image_url
+          description: 'The URL to your publicly accessible ad image. For POST API calls, this file must be browsable on the internet. For form Posts, the image can be uploaded either with or without base 64 encoding.'
+          required: true
+        - schema:
+            type: string
+            default: '3'
+            enum:
+              - '1'
+              - '3'
+              - logo
+            example: '1'
+          in: query
+          name: type
+          description: The Content.ad image type currently being uploaded. See enum values.
+components:
+  schemas: {}

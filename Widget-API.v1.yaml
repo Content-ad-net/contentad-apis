@@ -362,7 +362,7 @@ paths:
         '200':
           description: OK
       operationId: px.gif
-      description: ''
+      description: This pixel is returned automatically when the GetWidget JS response is written to the page in-browser.
 components:
   schemas: {}
   securitySchemes: {}
@@ -370,3 +370,4 @@ tags:
   - name: widget2
   - name: GetWidget
   - name: User Endpoint
+  - name: Conversion Pixel
