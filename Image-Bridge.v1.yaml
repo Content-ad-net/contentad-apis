@@ -96,7 +96,8 @@ paths:
   /:
     post:
       summary: Post Image
-      tags: []
+      tags:
+        - Post Image
       responses:
         '200':
           description: OK
@@ -107,8 +108,6 @@ paths:
                 properties:
                   affiliate_id:
                     type: integer
-                  campaign_id:
-                    type: integer
                   domain_id:
                     type: integer
                   image_url:
@@ -117,6 +116,8 @@ paths:
                     type: string
                   image_filename:
                     type: string
+                  campaign_id:
+                    type: integer
                 required:
                   - affiliate_id
                   - image_url
@@ -165,9 +166,6 @@ paths:
           description: The Content.ad Domain ID that the new Ad will be related to. Required for Type 1 ad images.
         - schema:
             type: string
-            default: ''
-            enum: []
-            example: ''
           in: query
           name: image_url
           description: 'The URL to your publicly accessible ad image. For POST API calls, this file must be browsable on the internet. For form Posts, the image can be uploaded either with or without base 64 encoding.'
@@ -185,3 +183,5 @@ paths:
           description: The Content.ad image type currently being uploaded. See enum values.
 components:
   schemas: {}
+tags:
+  - name: Post Image
