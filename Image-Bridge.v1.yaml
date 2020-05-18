@@ -169,6 +169,34 @@ paths:
                     image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
                     image_s3: 12345/logos/48e02c77-acff-4c75-842d-41f21cde3e26.jpg
                     image_filename: 48e02c77-acff-4c75-842d-41f21cde3e26.jpg
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                campaign_id required:
+                  value:
+                    error: 'ValidationError: "input.campaign_id" is required'
+                affiliate_id requried:
+                  value:
+                    error: 'ValidationError: "input.affiliate_id" is required'
+                image/image_url required:
+                  value:
+                    error: 'ValidationError: "input" must contain at least one of [image, image_url]'
+                domain_id required:
+                  value:
+                    error: 'ValidationError: "input.domain_id" is required'
+                Invalid file type:
+                  value:
+                    error: Invalid file type
+                invalid uri:
+                  value:
+                    error: 'ValidationError: "input.image_url" must be a valid uri'
       operationId: postImage
       description: "## Type 1 Ad images\nPass in the `affiliate_id`, `domain_id`, `image_url`, and `\"type\": 1` params to upload a Type 1 Ad image.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": 1\n}\n```\n\n## Type 3 Ad images\nPass in the`affiliate_id`, `campaign_id`, and `image_url` params to upload a Type 3 Ad image. You can optionaly pass in `\"type\": 3`, but this is not required.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"campaign_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\"\n}\n```\n\n## Logo images\nPass in the `affiliate_id`, `campaign_id`, `image_url`, and `\"type\": \"logo\"` params to upload a Type 3 Ad logo.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": \"logo\"\n}\n```"
       parameters:
@@ -182,7 +210,7 @@ paths:
             type: integer
           in: query
           name: campaign_id
-          description: The Content.ad Campaign ID that the new Ad will be related to. Required for Type 3 ad images.
+          description: The Content.ad Campaign ID that the new Ad will be related to. Required for logo and Type 3 ad images.
         - schema:
             type: integer
           in: query
