@@ -43,6 +43,22 @@ paths:
                 type: string
             example:
               auth_token: ja80lvagsT9galj90ladsmlasg9023lgakljsda909Q=
+        '401':
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          examples:
+            Account Inactive:
+              error: This account is not active
+            Auth Missing:
+              error: Authorization header is missing
+            No API Access:
+              error: This account is not allowed API access
+            Invalid Password:
+              error: Invalid password
       parameters:
         - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
   /advertiser/campaign/get:
