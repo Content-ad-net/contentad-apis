@@ -257,6 +257,85 @@ paths:
                   campaign_id: 12345
                   image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
         description: A JSON input body object
+  /copy:
+    post:
+      summary: Copy Image
+      tags:
+        - Copy Image
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  affiliate_id:
+                    type: integer
+                  source_campaign_id:
+                    type: integer
+                  target_campaign_id:
+                    type: integer
+                  source_filename:
+                    type: integer
+                  target_filename:
+                    type: integer
+                required:
+                  - affiliate_id
+                  - source_campaign_id
+                  - target_campaign_id
+                  - source_filename
+                  - target_filename
+              examples:
+                Success Response:
+                  value:
+                    affiliate_id: 12345
+                    source_campaign_id: 123
+                    target_campaign_id: 124
+                    source_filename: f6586c2e-7d93-11ea-9445-0242ac110002.png
+                    target_filename: f6586c2e-7d93-11ea-9445-0242ac110002.png
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                default: application/json
+              required: true
+      operationId: copyImage
+      description: Copies image from a source to a target campaign.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                affiliate_id:
+                  type: integer
+                soucre_camapign_id:
+                  type: integer
+                target_campaign_id:
+                  type: integer
+                source_filename:
+                  type: string
+              required:
+                - affiliate_id
+                - soucre_camapign_id
+                - target_campaign_id
+                - source_filename
+            examples:
+              Copy Ad Image:
+                value:
+                  affiliate_id: 12345
+                  source_campaign_id: 12345
+                  target_campaign_id: 12346
+                  source_filename: cdd1c3e3-7869-460b-87ad-0142945bcfc0.png
+        description: Request JSON body object
+      parameters:
+        - schema:
+            type: string
+            default: application/json
+          in: header
+          name: Content-Type
+          required: true
 components:
   schemas: {}
 tags:
