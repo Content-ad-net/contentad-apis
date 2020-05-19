@@ -198,41 +198,65 @@ paths:
                   value:
                     error: 'ValidationError: "input.image_url" must be a valid uri'
       operationId: postImage
-      description: "## Type 1 Ad images\nPass in the `affiliate_id`, `domain_id`, `image_url`, and `\"type\": 1` params to upload a Type 1 Ad image.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": 1\n}\n```\n\n## Type 3 Ad images\nPass in the`affiliate_id`, `campaign_id`, and `image_url` params to upload a Type 3 Ad image. You can optionaly pass in `\"type\": 3`, but this is not required.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"campaign_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\"\n}\n```\n\n## Logo images\nPass in the `affiliate_id`, `campaign_id`, `image_url`, and `\"type\": \"logo\"` params to upload a Type 3 Ad logo.\n```json\n{\n\t\"affiliate_id\": 12345,\n\t\"domain_id\": 12345,\n\t\"image_url\": \"https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg\",\n\t\"type\": \"logo\"\n}\n```"
-      parameters:
-        - schema:
-            type: integer
-          in: query
-          name: affiliate_id
-          description: The Content.ad Advertiser ID.
-          required: true
-        - schema:
-            type: integer
-          in: query
-          name: campaign_id
-          description: The Content.ad Campaign ID that the new Ad will be related to. Required for logo and Type 3 ad images.
-        - schema:
-            type: integer
-          in: query
-          name: domain_id
-          description: The Content.ad Domain ID that the new Ad will be related to. Required for Type 1 ad images.
-        - schema:
-            type: string
-          in: query
-          name: image_url
-          description: 'The URL to your publicly accessible ad image. For POST API calls, this file must be browsable on the internet. For form Posts, the image can be uploaded either with or without base 64 encoding.'
-          required: true
-        - schema:
-            type: string
-            default: '3'
-            enum:
-              - '1'
-              - '3'
-              - logo
-            example: '1'
-          in: query
-          name: type
-          description: The Content.ad image type currently being uploaded. See enum values.
+      description: |-
+        ## Type 1 Ad images
+        Pass in the `affiliate_id`, `domain_id`, `image_url`, and `"type": 1` params to upload a Type 1 Ad image.
+
+        ## Type 3 Ad images
+        Pass in the`affiliate_id`, `campaign_id`, and `image_url` params to upload a Type 3 Ad image. You can optionaly pass in `"type": 3`, but this is not required.
+
+        ## Logo images
+        Pass in the `affiliate_id`, `campaign_id`, `image_url`, and `"type": "logo"` params to upload a Type 3 Ad logo.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                affiliate_id:
+                  type: integer
+                  description: The Content.ad Campaign ID that the new Ad will be related to.
+                domain_id:
+                  type: integer
+                  description: The Content.ad Domain ID that the new Ad will be related to. Required for Type `1` ad images.
+                campaign_id:
+                  type: integer
+                  description: The Content.ad Campaign ID that the new Ad will be related to. Required for `logo` and Type `3` ad images.
+                image_url:
+                  type: string
+                  description: 'The URL to your publicly accessible ad image. For POST API calls, this file must be browsable on the internet. For form Posts, the image can be uploaded either with or without base 64 encoding.'
+                type:
+                  type: string
+                  default: '3'
+                  description: The Content.ad image type currently being uploaded. See enum values. Required for type `1` and `logo` image types.
+                  enum:
+                    - '1'
+                    - '3'
+                    - logo
+                  example: logo
+              required:
+                - affiliate_id
+                - image_url
+            examples:
+              Logo Image:
+                value:
+                  affiliate_id: 12345
+                  domain_id: 12345
+                  image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+                  type: logo
+              Type 1 Ad Image:
+                value:
+                  affiliate_id: 12345
+                  domain_id: 12345
+                  image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+                  type: 1
+              Type 3 Ad Image:
+                value:
+                  affiliate_id: 12345
+                  campaign_id: 12345
+                  image_url: 'https://miro.medium.com/max/1400/1*JwrOa8sYo8uXCcxphEpgXA.jpeg'
+        description: A JSON input body object
 components:
   schemas: {}
 tags:
