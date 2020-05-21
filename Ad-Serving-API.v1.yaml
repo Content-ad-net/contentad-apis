@@ -1,0 +1,390 @@
+openapi: 3.0.0
+info:
+  title: Ad Serving API
+  version: '1.0'
+  contact:
+    name: Content.ad Support
+    url: 'https://help.content.ad'
+    email: support@content.ad
+  description: |-
+    The Content.ad Widget API is a flexible alternative to the standard JavaScript implementation. Widget results are returned as a JSON object, and settings (number of ads, type of content, etc.) are managed in the widget section of the Content.ad admin.
+
+    The Widget API can be accessed either by using the in-browser instalation code, or by accessing this API directly. If you are accessing this API directly, pass the widget parameters appropriate to your use case to the GetWidget endpoint. If you'd like to reproduce the in-browser experience, you can either use our standard installation code provided in the Contetn.ad UI, or you can call the widget2 endpoint directly, followed by the GetWidget endpoint.
+
+    ## Setting Up the API Call
+
+    Set up a widget in the Content.ad admin. Performance reports can be broken out by widget or domain. If the domain is new, it must be approved by the Content.ad team before showing sponsored content.
+
+    Copy the parameters in the installation code labeled “id” and “d”. These are your unique widget ID and unique domain ID, respectively. These are not the same as the Widget ID and Domain ID in the user interface. They are the long strings in the widget installation code.
+
+    Place the parameters, along with the encoded page URL, into the API call below. The domain of the URL must match the domain under which the widget was created and must begin with `http://` or `https://`.
+
+    Please note: The visitor's IP address and URL encoded user agent are only needed when the API call is made server-side.
+servers:
+  - url: api.content-ad.net
+    description: Widget API
+paths:
+  /Scripts/widget2.aspx:
+    get:
+      summary: On-page widget library
+      tags:
+        - widget2
+      responses:
+        '200':
+          description: OK
+      operationId: widget2
+      parameters:
+        - schema:
+            type: string
+            example: 2c304fbb-b1a5-4800-ab3a-b02f2c562ba2
+          in: query
+          name: id
+          description: 'The unique identifier for your account (API Key). Default: none'
+          required: true
+        - schema:
+            type: string
+            example: ZXhhbXBsZS5jb250ZW50LmFk
+          in: query
+          name: d
+          description: |
+            The unique identifier for your domain. Default: none
+          required: true
+        - schema:
+            type: integer
+            example: 687719
+          in: query
+          name: wid
+          description: 'The unique identifier for your widget. Default: none'
+          required: true
+        - schema:
+            type: string
+            example: '1588800280815'
+          in: query
+          name: cb
+          description: The currrent time in milliseconds since the epoc. This number insures that your request is unique and will therefore recieve the latest version of the widget2 library.
+        - schema:
+            type: string
+          in: query
+          name: clientId
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_source' value is stored here automatilally if a clientId value is not passed in.
+            Note: The clientId must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: clientId2
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_campaign' value is stored here automatilally if a clientId2 value is not passed in.
+            Note: The clientId2 must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: pushId
+          description: "Your Publisher provided subscriber ID. The 'pushId' value is treated interchangably with the 'euid' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: euid
+          description: "Your Publisher provided subscriber ID. The 'euid' value is treated interchangably with the 'pushId' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: ipAddress
+          description: "End user's IP Address. This is not the IP of your server, but instead the IP of the person who will receive the ad. This value is automaticaly filled for in-browser installation code (HTML response) requests."
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: userAgent
+          description: 'The URL encoded user agent string. This is not the user agent of your server, but instead the user agent string of the person who will receive the ad. This value is automaticaly filled for installation code (HTML response) requests.'
+        - schema:
+            type: string
+            example: 'true'
+          in: query
+          name: debug
+          description: "If specified, the 'debug' and 'debugMode' parameters display reuest variables in the JSON and HTML responses, respecitively. Including this value in your request will return the debug data, reguardless of the value you assign to the parameter."
+        - schema:
+            type: string
+          in: query
+          name: exitPop
+          description: 'Required for Exit Intent widgets only. When set to true, the widget will only appear when the user is about to leave the page.'
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: exitPopMobile
+          description: 'Required for Mobile Exit Pop widgets only. When set to true, the widget will only appear when the user scrolls up or reaches the bottom of the page.'
+          required: true
+        - schema:
+            type: integer
+            example: 1
+          in: query
+          name: blockIntl
+          description: 'When set to 1, the widget will not display for users outside of the United States and Canada.'
+        - schema:
+            type: integer
+            example: 1
+          in: query
+          name: blockMobile
+          description: 'When set to 1, the widget will not display for mobile users.'
+        - schema:
+            type: string
+          in: query
+          name: pre
+          description: Add this value to the beginning of all links in the rendered widget. This is useful for adding macros when serving the widget through a third party ad service such as Google DFP.
+        - schema:
+            type: string
+          in: query
+          name: internalTarget
+          description: 'If true, Sets the value of the "target" attribute on internal content links.'
+        - schema:
+            type: string
+          in: query
+          name: externalTarget
+          description: 'Sets the value of the "target" attribute on sponsored links.'
+        - schema:
+            type: number
+            default: 1
+            example: 0
+          in: query
+          name: exitPopExpireDays
+          description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
+      description: "## Standard Installation Code\nThe widget2 endpoint will return a JavaScript library that can be included on your in-browser page that drives the display of your widget. \n\n\nYou can either allow the widget2 library to request ads from the GetWidget endpoint, or you can make a programmatic call of your own to GetWidget after including the widget2 library on your in-browser web page."
+  /GetWidget.aspx:
+    get:
+      summary: Get Widget Ads On-page
+      tags:
+        - GetWidget
+      responses:
+        '200':
+          description: OK
+      operationId: GetWidget
+      description: 'The GetWidget endpoint will return either a JSON object containing ads, or a JavaScript file that can be included on your in-browser page to display your widget.'
+      parameters:
+        - schema:
+            type: string
+            example: 2c304fbb-b1a5-4800-ab3a-b02f2c562ba2
+          in: query
+          name: id
+          description: 'The unique identifier for your account (API Key). Default: none'
+          required: true
+        - schema:
+            type: string
+            example: ZXhhbXBsZS5jb250ZW50LmFk
+          in: query
+          name: d
+          description: |
+            The unique identifier for your domain. Default: none
+          required: true
+        - schema:
+            type: integer
+            example: 687719
+          in: query
+          name: wid
+          description: 'The unique identifier for your widget. Default: none'
+          required: true
+        - schema:
+            type: string
+            example: '1588800280815'
+          in: query
+          name: cb
+          description: The currrent time in milliseconds since the epoc. This number insures that your request is unique and will therefore recieve the latest version of the widget2 library.
+        - schema:
+            type: string
+          in: query
+          name: clientId
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_source' value is stored here automatilally if a clientId value is not passed in.
+            Note: The clientId must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: clientId2
+          description: |-
+            Assigns a tracking parameter to clicks generated from the widget. Accepts any string up to 64 characters.
+            The page URL's 'utm_campaign' value is stored here automatilally if a clientId2 value is not passed in.
+            Note: The clientId2 must not include user-identifiable values.
+        - schema:
+            type: string
+          in: query
+          name: pushId
+          description: "Your Publisher provided subscriber ID. The 'pushId' value is treated interchangably with the 'euid' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: euid
+          description: "Your Publisher provided subscriber ID. The 'euid' value is treated interchangably with the 'pushId' value. Default: none"
+        - schema:
+            type: string
+          in: query
+          name: ipAddress
+          description: "End user's IP Address. This is not the IP of your server, but instead the IP of the person who will receive the ad. This value is automaticaly filled for in-browser installation code (HTML response) requests. The visitor's IP address is required when the API call is made server-side."
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: userAgent
+          description: "The URL encoded user agent string. This is not the user agent of your server, but instead the user agent string of the person who will receive the ad. This value is automaticaly filled for installation code (HTML response) requests. The visitor's URL encoded user agent are required when the API call is made server-side."
+          required: true
+        - schema:
+            type: string
+            example: 'true'
+          in: query
+          name: debug
+          description: "If specified, the 'debug' and 'debugMode' parameters display reuest variables in the JSON and HTML responses, respecitively. Including this value in your request will return the debug data, reguardless of the value you assign to the parameter."
+        - schema:
+            type: string
+          in: query
+          name: exitPop
+          description: 'Required for Exit Intent widgets only. When set to true, the widget will only appear when the user is about to leave the page.'
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: exitPopMobile
+          description: 'Required for Mobile Exit Pop widgets only. When set to true, the widget will only appear when the user scrolls up or reaches the bottom of the page.'
+          required: true
+        - schema:
+            type: integer
+            example: 1
+          in: query
+          name: blockIntl
+          description: 'When set to 1, the widget will not display for users outside of the United States and Canada.'
+        - schema:
+            type: integer
+            example: 1
+          in: query
+          name: blockMobile
+          description: 'When set to 1, the widget will not display for mobile users.'
+        - schema:
+            type: string
+          in: query
+          name: pre
+          description: Add this value to the beginning of all links in the rendered widget. This is useful for adding macros when serving the widget through a third party ad service such as Google DFP.
+        - schema:
+            type: string
+          in: query
+          name: internalTarget
+          description: 'If true, Sets the value of the "target" attribute on internal content links.'
+        - schema:
+            type: string
+          in: query
+          name: externalTarget
+          description: 'Sets the value of the "target" attribute on sponsored links.'
+        - schema:
+            type: number
+            default: 1
+            example: 0
+          in: query
+          name: exitPopExpireDays
+          description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'false'
+          in: query
+          name: served
+          description: "If true, records an impression for the widget. Value is automaticlay set to 'true' for installation code (HTML resonse) requests. If the request is for an auction, then the publisher must send a request with 'served=false', followed by a call to the user endpoint with 'served=true' to notify us that the bid was successful, and the ad was served. Default: true"
+        - schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: styles
+          description: 'If true, returns CSS as part of the JSON response. CSS is always returned for HTML responses. Default: false'
+        - schema:
+            type: string
+            example: callbackFunctionName
+          in: query
+          name: callback
+          description: 'Wraps result set in function with provided name for JSONP compatiblitity. Default: null Expects: function name'
+        - schema:
+            type: string
+          in: query
+          name: ik
+          description: Impression Key value. Expects UUID format
+  /widget/impression/served:
+    post:
+      summary: Bid Win
+      tags:
+        - User Endpoint
+      responses:
+        '200':
+          description: OK
+      operationId: servedEqualsTrue
+      description: 'If `served=false` for the GetWidget call and the widget is then served by your software, then you MUST make a server side HTTP post request to update the impression to `served=true` by posting the vlaues in the `impression_served_url` received in the JSON response.'
+      parameters:
+        - schema:
+            type: string
+            default: 'true'
+            enum:
+              - 'true'
+              - 'false'
+            example: 'true'
+          in: query
+          name: served
+          description: "If true, records an impression for the widget. Value is automaticlay set to 'true' for installation code (HTML resonse) requests. If the request was an auction, then the publisher must send a request with 'served=false', followed by a call to the user endpoint to notify us that the bid was successful, and the ad was served. Default: true"
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: ik
+          description: Impression Key value. Look in the `impression_served_url` in the GetWidget JSON response object for the `ik` value. Expects UUID format
+          required: true
+        - schema:
+            type: string
+            example: '687719'
+          in: query
+          name: wid
+          description: 'The unique identifier for your widget. Look in the `impression_served_url` in the GetWidget JSON response object for the `wid` value. Default: none'
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: haid
+          description: Impression Key value. Look in the `impression_served_url` in the GetWidget JSON response object for the `haid` value.
+          required: true
+  /px.gif:
+    get:
+      summary: In-Browser Conversion Pixel
+      tags:
+        - Conversion Pixel
+      responses:
+        '200':
+          description: OK
+      operationId: px.gif
+      description: This pixel is returned automatically when the GetWidget JS response is written to the page in-browser.
+    post:
+      summary: In-Browser Conversion Pixel
+      tags:
+        - Conversion Pixel
+      responses:
+        '200':
+          description: OK
+      operationId: px-2.gif
+      description: This pixel is returned automatically when the GetWidget JS response is written to the page in-browser.
+  /bidrequests:
+    get:
+      summary: Bid Requests
+      tags:
+        - Bid Requests
+      responses: {}
+      operationId: get-bidrequests
+      description: ''
+components:
+  schemas: {}
+  securitySchemes: {}
+tags:
+  - name: widget2
+  - name: GetWidget
+  - name: User Endpoint
+  - name: Conversion Pixel

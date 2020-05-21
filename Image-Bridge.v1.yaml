@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Image Bridge
+  title: Image Processing System
   version: '1.0'
   contact:
     email: support@content.ad
     url: 'https://help.content.ad'
     name: Content.ad Support
   description: |-
-    # Image bridge
+    # Image upload
 
     Stores ad images in S3.
 
@@ -199,6 +199,9 @@ paths:
                     error: 'ValidationError: "input.image_url" must be a valid uri'
       operationId: postImage
       description: |-
+        ## Allowable file times
+        png, jpg, swf, gif (animated), zip
+
         ## Type 1 Ad images
         Pass in the `affiliate_id`, `domain_id`, `image_url`, and `"type": 1` params to upload a Type 1 Ad image.
 
@@ -310,7 +313,7 @@ paths:
               properties:
                 affiliate_id:
                   type: integer
-                soucre_camapign_id:
+                source_campaign_id:
                   type: integer
                 target_campaign_id:
                   type: integer
@@ -318,7 +321,7 @@ paths:
                   type: string
               required:
                 - affiliate_id
-                - soucre_camapign_id
+                - source_campaign_id
                 - target_campaign_id
                 - source_filename
             examples:
@@ -340,3 +343,4 @@ components:
   schemas: {}
 tags:
   - name: Post Image
+  - name: Copy image

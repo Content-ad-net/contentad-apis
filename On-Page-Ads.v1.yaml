@@ -26,7 +26,7 @@ servers:
 paths:
   /Scripts/widget2.aspx:
     get:
-      summary: widget2 (all fields)
+      summary: On-page widget library
       tags:
         - widget2
       responses:
@@ -151,10 +151,10 @@ paths:
           in: query
           name: exitPopExpireDays
           description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
-      description: 'The widget2 endpoint will return a JavaScript library that can be included on your in-browser page that drives the display of your widget. You can either allow the widget2 library to request ads from the GetWidget endpoint, or you can make a programmatic call of your own to GetWidget after including the widget2 library on your in-browser web page.'
+      description: "## Standard Installation Code\nThe widget2 endpoint will return a JavaScript library that can be included on your in-browser page that drives the display of your widget. \n\n\nYou can either allow the widget2 library to request ads from the GetWidget endpoint, or you can make a programmatic call of your own to GetWidget after including the widget2 library on your in-browser web page."
   /GetWidget.aspx:
     get:
-      summary: GetWidget (all fields)
+      summary: Get Widget Ads On-page
       tags:
         - GetWidget
       responses:
@@ -362,6 +362,15 @@ paths:
         '200':
           description: OK
       operationId: px.gif
+      description: This pixel is returned automatically when the GetWidget JS response is written to the page in-browser.
+    post:
+      summary: In-Browser Conversion Pixel
+      tags:
+        - Conversion Pixel
+      responses:
+        '200':
+          description: OK
+      operationId: px-2.gif
       description: This pixel is returned automatically when the GetWidget JS response is written to the page in-browser.
 components:
   schemas: {}
