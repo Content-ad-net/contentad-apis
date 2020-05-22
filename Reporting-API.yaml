@@ -88,7 +88,7 @@ paths:
               - 'false'
           in: query
           name: groupByDay
-          description: 'Default report groups by hour. To group by day, set to true.'
+          description: "Default report groups by hour. To group by day, set to true. 'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
         - $ref: 'https://en.wikipedia.org/wiki/Basic_access_authentication'
         - schema:
             type: string
@@ -473,7 +473,7 @@ paths:
               - aggregate
           in: query
           name: groupTime
-          description: 'Return entries by hour, day or aggregate.'
+          description: "Return entries by hour, day or aggregate. 'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
       tags:
         - Publisher Reports
       description: |-
@@ -917,7 +917,7 @@ paths:
             example: aggregate
           in: query
           name: groupTime
-          description: 'Returns entries by hour, day or aggregate'
+          description: "Returns entries by hour, day or aggregate. 'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
     parameters: []
   /publisher/device-geo:
     get:
@@ -1202,7 +1202,7 @@ paths:
             example: aggregate
           in: query
           name: groupTime
-          description: 'Returns entries by hour, day or aggregate'
+          description: "Returns entries by hour, day or aggregate.  'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
   /advertiser:
     get:
       summary: Advertiser Report
@@ -1293,7 +1293,7 @@ paths:
             example: aggregate
           in: query
           name: groupTime
-          description: 'Returns entries by date, hour or aggregate.'
+          description: "Returns entries by date, hour or aggregate. 'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
         - schema:
             type: string
             default: xml
@@ -1754,7 +1754,7 @@ paths:
             example: day
           in: query
           name: groupTime
-          description: 'Return entries by hour, day or aggregate.'
+          description: "Return entries by hour, day or aggregate. 'hour' limit: max 2 days (48 hours). 'day' limit: max 30 days."
         - schema:
             type: integer
             example: 462354
