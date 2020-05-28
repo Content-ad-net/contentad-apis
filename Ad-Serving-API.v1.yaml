@@ -90,7 +90,17 @@ paths:
                         sponsored: true
                         sponsored_by: anotherdomain.com
       operationId: GetWidget
-      description: The GetWidget endpoint will return either a JSON object containing ads.
+      description: |-
+        The GetWidget endpoint will return either a JSON object containing ads.
+
+        The Content.ad Widget API is a flexible alternative to the standard JavaScript implementation. Widget results are returned as a JSON object, and settings (number of ads, type of content, etc.) are managed in the widget section of the Content.ad admin.
+
+        ## Setting Up the API Call
+        1. Set up a widget in the Content.ad admin. Performance reports can be broken out by widget or domain. If the domain is new, it must be approved by the Content.ad team before showing sponsored content.
+        2. Copy the parameters in the installation code labeled "id" and "d". These are your unique widget ID and unique domain ID, respectively.
+        3. Place the parameters, along with the encoded page URL, into the API call below. The domain of the URL must match the domain under which the widget was created.
+
+        Please note: The visitor’s IP address and encoded user agent are only required when the API call is made server-side.
       parameters:
         - schema:
             type: string
