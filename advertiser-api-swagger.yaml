@@ -798,6 +798,7 @@ definitions:
             - tr
             - za
             - xx
+          example: 'us,ca'
       tracking_params:
         type: string
       domain_blocklist_id:

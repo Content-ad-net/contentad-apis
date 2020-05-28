@@ -21,7 +21,7 @@ info:
 
     Please note: The visitor's IP address and URL encoded user agent are only needed when the API call is made server-side.
 servers:
-  - url: api.content-ad.net
+  - url: api.content-ad.net/api.svc
     description: Widget API
 paths:
   /Scripts/widget2.aspx:
@@ -152,7 +152,7 @@ paths:
           name: exitPopExpireDays
           description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
       description: "## Standard Installation Code\nThe widget2 endpoint will return a JavaScript library that can be included on your in-browser page that drives the display of your widget. \n\n\nYou can either allow the widget2 library to request ads from the GetWidget endpoint, or you can make a programmatic call of your own to GetWidget after including the widget2 library on your in-browser web page."
-  /GetWidget.aspx:
+  '/GetWidget/{Widet GUID}/{Domain ID}':
     get:
       summary: Get Widget Ads On-page
       tags:
@@ -160,37 +160,66 @@ paths:
       responses:
         '200':
           description: OK
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slot_count:
+                    type: integer
+                  styles:
+                    type: string
+                  articles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slot:
+                          type: integer
+                        url:
+                          type: string
+                        title:
+                          type: string
+                        image:
+                          type: string
+                        sponsored:
+                          type: boolean
+                      required:
+                        - slot
+                        - url
+                        - title
+                        - image
+                        - sponsored
+                required:
+                  - slot_count
+                  - articles
+              examples:
+                JSON:
+                  value:
+                    slot_count: 3
+                    styles: '<style type="text/css" id="ac_xxxx_css"> #ac_xxxx { clear:both; display:block; text-align:left; margin:20px 0; position:relative; text-align:left; line-height:1em; }'
+                    articles:
+                      - slot: 1
+                        url: 'http://example.content.ad/sample-url-here'
+                        title: A Very Interesting Article You May Like
+                        image: 'http://example.content.ad/sample-image.jpg'
+                        sponsored: false
+                      - slot: 2
+                        url: 'http://example.content.ad/sample-url-here-2'
+                        title: Another Interesting Article You May Like
+                        image: 'http://example.content.ad/sample-image-2.jpg'
+                        sponsored: true
+                        sponsored_by: domain.com
+                      - slot: 3
+                        url: 'http://example.content.ad/sample-url-here-3'
+                        title: Yet Another Interesting Article You May Like
+                        image: 'http://example.content.ad/sample-image-3.jpg'
+                        sponsored: true
+                        sponsored_by: anotherdomain.com
       operationId: GetWidget
-      description: 'The GetWidget endpoint will return either a JSON object containing ads, or a JavaScript file that can be included on your in-browser page to display your widget.'
+      description: The GetWidget endpoint will return either a JSON object containing ads.
       parameters:
-        - schema:
-            type: string
-            example: 2c304fbb-b1a5-4800-ab3a-b02f2c562ba2
-          in: query
-          name: id
-          description: 'The unique identifier for your account (API Key). Default: none'
-          required: true
-        - schema:
-            type: string
-            example: ZXhhbXBsZS5jb250ZW50LmFk
-          in: query
-          name: d
-          description: |
-            The unique identifier for your domain. Default: none
-          required: true
-        - schema:
-            type: integer
-            example: 687719
-          in: query
-          name: wid
-          description: 'The unique identifier for your widget. Default: none'
-          required: true
-        - schema:
-            type: string
-            example: '1588800280815'
-          in: query
-          name: cb
-          description: The currrent time in milliseconds since the epoc. This number insures that your request is unique and will therefore recieve the latest version of the widget2 library.
         - schema:
             type: string
           in: query
@@ -237,52 +266,6 @@ paths:
           description: "If specified, the 'debug' and 'debugMode' parameters display reuest variables in the JSON and HTML responses, respecitively. Including this value in your request will return the debug data, reguardless of the value you assign to the parameter."
         - schema:
             type: string
-          in: query
-          name: exitPop
-          description: 'Required for Exit Intent widgets only. When set to true, the widget will only appear when the user is about to leave the page.'
-          required: true
-        - schema:
-            type: string
-          in: query
-          name: exitPopMobile
-          description: 'Required for Mobile Exit Pop widgets only. When set to true, the widget will only appear when the user scrolls up or reaches the bottom of the page.'
-          required: true
-        - schema:
-            type: integer
-            example: 1
-          in: query
-          name: blockIntl
-          description: 'When set to 1, the widget will not display for users outside of the United States and Canada.'
-        - schema:
-            type: integer
-            example: 1
-          in: query
-          name: blockMobile
-          description: 'When set to 1, the widget will not display for mobile users.'
-        - schema:
-            type: string
-          in: query
-          name: pre
-          description: Add this value to the beginning of all links in the rendered widget. This is useful for adding macros when serving the widget through a third party ad service such as Google DFP.
-        - schema:
-            type: string
-          in: query
-          name: internalTarget
-          description: 'If true, Sets the value of the "target" attribute on internal content links.'
-        - schema:
-            type: string
-          in: query
-          name: externalTarget
-          description: 'Sets the value of the "target" attribute on sponsored links.'
-        - schema:
-            type: number
-            default: 1
-            example: 0
-          in: query
-          name: exitPopExpireDays
-          description: 'When widget is an exit pop, sets the frequency that the widget appears for each user. Accepts a decimal defining the number of days. When not set, the widget appears once per session. When set to 0, it appears on every pageview.'
-        - schema:
-            type: string
             default: 'true'
             enum:
               - 'true'
@@ -300,7 +283,7 @@ paths:
             example: 'true'
           in: query
           name: styles
-          description: 'If true, returns CSS as part of the JSON response. CSS is always returned for HTML responses. Default: false'
+          description: 'If true, returns CSS & JavaScript as part of the JSON response. CSS & JavaScript are always returned for HTML responses. Default: false'
         - schema:
             type: string
             example: callbackFunctionName
@@ -312,6 +295,25 @@ paths:
           in: query
           name: ik
           description: Impression Key value. Expects UUID format
+        - schema:
+            type: string
+          in: query
+          name: url
+          description: URL where the widget will be displayed. Must be URL Encoded.
+          required: true
+    parameters:
+      - schema:
+          type: string
+        name: Widet GUID
+        in: path
+        required: true
+        description: The GUID of your Content.ad widget.
+      - schema:
+          type: string
+        name: Domain ID
+        in: path
+        required: true
+        description: 'Your domain name in base64 encoded format. ex: `my.domain.com`'
   /widget/impression/served:
     post:
       summary: Bid Win
